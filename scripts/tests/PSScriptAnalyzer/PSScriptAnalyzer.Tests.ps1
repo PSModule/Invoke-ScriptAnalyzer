@@ -26,27 +26,31 @@ BeforeDiscovery {
         $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
         $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
 
-        Write-Verbose ($PSStyle.OutputRendering.ToString()) -Verbose
+        $PSStyle.OutputRendering = 'Ansi'
+        $darkGrey = $PSStyle.Foreground.FromRgb(85, 85, 85)
+        $green = $PSStyle.Foreground.Green
+        $reset = $PSStyle.Reset
 
         foreach ($ruleObject in $ruleObjects) {
             if ($ruleObject.RuleName -in $settings.ExcludeRules) {
-                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-                Write-Host '   Skipping rule - Exclude list' -ForegroundColor DarkGray
+                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
+                Write-Host "$darkGrey     Skipping rule - Exclude list$reset"
                 $skip = $true
             } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-                Write-Host '   Skipping rule - Include list' -ForegroundColor DarkGray
+                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
+                Write-Host "$darkGrey     Skipping rule - Include list$reset"
                 $skip = $true
             } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-                Write-Host '   Skipping rule - Severity list' -ForegroundColor DarkGray
+                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
+                Write-Host "$darkGrey     Skipping rule - Severity list$reset"
                 $skip = $true
             } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
-                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-                Write-Host '   Skipping rule  - Disabled' -ForegroundColor DarkGray
+                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
+                Write-Host "$darkGrey     Skipping rule  - Disabled$reset"
                 $skip = $true
             } else {
-                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor Green
+                Write-Host "$green + $($ruleObject.RuleName)$reset"
+                Write-Host "$green     Including rule$reset"
                 $skip = $false
             }
 
