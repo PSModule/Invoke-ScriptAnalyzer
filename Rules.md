@@ -6,7 +6,7 @@ for PSScriptAnalyzer. The file is used by the GitHub action to customize analysi
 ## File Location and Basic Setup
 
 Place the file at:
-```
+```powershell
 .github/linters/.powershell-psscriptanalyzer.psd1
 ```
 The file is a PowerShell data file (.psd1) that returns a hashtable. For example:
