@@ -31,7 +31,7 @@ BeforeDiscovery {
             $skip = $true
         } elseif ($settings.SourceName -and $ruleObject.SourceName -notin $settings.SourceName) {
             $skip = $true
-        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and $settings.Rules[$ruleObject.RuleName].Enabled -eq $false) {
+        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
             $skip = $true
         } else {
             $skip = $false
