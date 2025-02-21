@@ -52,15 +52,15 @@
     ExcludeRules = @(
         'PSUseConsistentWhitespace'
     )
-    IncludeRules = @(
-        'PSAvoidSemicolonsAsLineTerminators'
-        'PSPlaceCloseBrace'
-        'PSPlaceOpenBrace'
-        'PSProvideCommentHelp'
-        'PSUseConsistentIndentation'
-    )
+    # IncludeRules = @(
+    #     'PSAvoidSemicolonsAsLineTerminators'
+    #     'PSPlaceCloseBrace'
+    #     'PSPlaceOpenBrace'
+    #     'PSProvideCommentHelp'
+    #     'PSUseConsistentIndentation'
+    # )
     Severity     = @(
         'Error'
-        'Information'
+        'Warning'
     )
 }
