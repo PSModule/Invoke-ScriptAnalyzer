@@ -1,5 +1,5 @@
-name: Test-PSModule (by PSModule)
-description: Test a PowerShell module before publishing the module to the PowerShell Gallery.
+name: Invoke-ScriptAnalyzer (by PSModule)
+description: Runs PSScriptAnalyzer on the code.
 author: PSModule
 branding:
   icon: check-square
@@ -15,7 +15,7 @@ inputs:
     required: false
     default: 'Custom'
   SettingsFilePath:
-    description: The path to the settings file.
+    description: If 'Custom' is selected, the path to the settings file.
     required: false
     default: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
 
