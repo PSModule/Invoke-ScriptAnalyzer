@@ -2,12 +2,12 @@
 $settings = $env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_Settings
 $testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
 $codePath = Resolve-Path -Path $env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_Path | Select-Object -ExpandProperty Path
-$settingsPath = switch -Regex ($settings) {
+$settingsFilePath = switch -Regex ($settings) {
     'Module|SourceCode' {
         "$testPath/$settings.Settings.psd1"
     }
     'Custom' {
-        Resolve-Path -Path "$env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_SettingsPath" | Select-Object -ExpandProperty Path
+        Resolve-Path -Path "$env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath" | Select-Object -ExpandProperty Path
     }
     default {
         throw "Invalid test type: [$settings]"
@@ -15,13 +15,13 @@ $settingsPath = switch -Regex ($settings) {
 }
 
 [pscustomobject]@{
-    Settings     = $settings
-    CodePath     = $codePath
-    TestPath     = $testPath
-    SettingsPath = $settingsPath
+    Settings         = $settings
+    CodePath         = $codePath
+    TestPath         = $testPath
+    SettingsFilePath = $settingsFilePath
 } | Format-List
 
 Set-GitHubOutput -Name Settings -Value $settings
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
-Set-GitHubOutput -Name SettingsPath -Value $settingsPath
+Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
