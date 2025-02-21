@@ -36,11 +36,11 @@ BeforeDiscovery {
             Write-Verbose "  Severity: $($settings.Severity)" -Verbose
             Write-Verbose "  Severity not included: $($ruleObject.Severity -notin $($settings.Severity))" -Verbose
             $true
-        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
+        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
             Write-Verbose "  Rules:    $($settings.Rules)" -Verbose
             Write-Verbose "  Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))" -Verbose
-            Write-Verbose "  Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)" -Verbose
+            Write-Verbose "  Enable:   $($settings.Rules[$ruleObject.RuleName].Enable)" -Verbose
             $true
         } else {
             $false
