@@ -1,20 +1,11 @@
 # Invoke-ScriptAnalyzer (by PSModule)
 
-This repository contains a GitHub Action that runs PSScriptAnalyzer on your code.
+This repository contains a GitHub Action that runs [`PSScriptAnalyzer`](https://github.com/PowerShell/PSScriptAnalyzer) on your code.
 The action analyzes PowerShell scripts using a hashtable-based settings file to
 customize rule selection, severity filtering, and custom rule inclusion.
 
 > **Note:** This repository includes automated tests that run via Pester to ensure
 > your settings file is working as expected.
-
-## Action Details
-
-- **Name:** Invoke-ScriptAnalyzer (by PSModule)
-- **Description:** Runs PSScriptAnalyzer on the code.
-- **Author:** PSModule
-- **Branding:**
-  Icon: `check-square`
-  Color: `gray-dark`
 
 ## Inputs
 
