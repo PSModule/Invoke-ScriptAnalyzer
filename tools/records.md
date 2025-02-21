@@ -1,3 +1,5 @@
+# Schemas for records used in PSScriptAnalyzer
+
 ## Schema: Get-ScriptAnalyzerRule
 
 ```plaintext
