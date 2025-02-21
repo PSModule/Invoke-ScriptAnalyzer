@@ -26,7 +26,7 @@ BeforeDiscovery {
         $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
         $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
 
-        $PSStyle.OutputRendering = 'Ansi'
+        $PSStyle.OutputRendering
 
         foreach ($ruleObject in $ruleObjects) {
             if ($ruleObject.RuleName -in $settings.ExcludeRules) {
