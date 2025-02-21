@@ -56,7 +56,6 @@
     IncludeRules = @(
         'PSAvoidSemicolonsAsLineTerminators'
         'PSPlaceCloseBrace'
-        # 'PSPlaceOpenBrace'
         'PSProvideCommentHelp'
         'PSUseConsistentIndentation'
     )
