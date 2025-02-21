@@ -21,13 +21,28 @@ BeforeDiscovery {
     $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
     $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
     foreach ($ruleObject in $ruleObjects) {
+        $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
+            $true
+        } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
+            $skip = $true
+        } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
+            $skip = $true
+        } elseif ($settings.SourceType -and $ruleObject.SourceType -notin $settings.SourceType) {
+            $skip = $true
+        } elseif ($settings.SourceName -and $ruleObject.SourceName -notin $settings.SourceName) {
+            $skip = $true
+        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and $settings.Rules[$ruleObject.RuleName].Enabled -eq $false) {
+            $skip = $true
+        } else {
+            $skip = $false
+        }
         $rules.Add(
             [ordered]@{
                 RuleName    = $ruleObject.RuleName
                 CommonName  = $ruleObject.CommonName
                 Severity    = $ruleObject.Severity
                 Description = $ruleObject.Description
-                Skip        = $ruleObject.RuleName -in $settings.ExcludeRules
+                Skip        = $skip
                 <#
                     RuleName          : PSDSCUseVerboseMessageInDSCResource
                     CommonName        : Use verbose message in DSC resource
