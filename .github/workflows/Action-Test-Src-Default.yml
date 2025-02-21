@@ -21,11 +21,3 @@ jobs:
       TestType: Src-Default
       Path: tests/srcTestRepo/src
       Settings: SourceCode
-
-  ActionTestCustom:
-    uses: ./.github/workflows/ActionTestWorkflow.yml
-    with:
-      TestType: Src-Default-Custom
-      Path: tests/srcTestRepo/src
-      Settings: Custom
-      SettingsFilePath: tests/srcTestRepo/tests/Custom.Settings.psd1
