@@ -52,7 +52,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 1. **Path Resolution:**
    The action reads inputs and determines the code path, test path, and the
    settings file path. For custom settings, it uses the file at:
-   ```
+   ```powershell
    .github/linters/.powershell-psscriptanalyzer.psd1
    ```
    Otherwise, it uses a default settings file from the test folder.
