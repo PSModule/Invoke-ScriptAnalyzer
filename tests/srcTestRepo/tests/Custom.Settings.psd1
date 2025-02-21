@@ -61,6 +61,6 @@
     )
     Severity     = @(
         'Error'
-        'Warning'
+        'Information'
     )
 }
