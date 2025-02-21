@@ -27,15 +27,12 @@ BeforeDiscovery {
             $skip = $true
         } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
             $skip = $true
-        } elseif ($settings.SourceType -and $ruleObject.SourceType -notin $settings.SourceType) {
-            $skip = $true
-        } elseif ($settings.SourceName -and $ruleObject.SourceName -notin $settings.SourceName) {
-            $skip = $true
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
             $skip = $true
         } else {
             $skip = $false
         }
+
         $rules.Add(
             [ordered]@{
                 RuleName    = $ruleObject.RuleName
