@@ -1,6 +1,6 @@
 ﻿# If test type is module, the code we ought to test is in the path/name folder, otherwise it's in the path folder.
 $settings = $env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_Settings
-$testPath = Resolve-Path -Path "$PSScriptRoot/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
+$testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
 $codePath = Resolve-Path -Path $env:GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_Path | Select-Object -ExpandProperty Path
 $settingsPath = switch -Regex ($settings) {
     'Module|SourceCode' {
