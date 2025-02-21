@@ -33,24 +33,19 @@ BeforeDiscovery {
 
         foreach ($ruleObject in $ruleObjects) {
             if ($ruleObject.RuleName -in $settings.ExcludeRules) {
-                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
-                Write-Host "$darkGrey     Skipping rule - Exclude list$reset"
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Exclude list$reset"
                 $skip = $true
             } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
-                Write-Host "$darkGrey     Skipping rule - Include list$reset"
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Include list$reset"
                 $skip = $true
             } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
-                Write-Host "$darkGrey     Skipping rule - Severity list$reset"
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Severity list$reset"
                 $skip = $true
             } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
-                Write-Host "$darkGrey - $($ruleObject.RuleName)$reset"
-                Write-Host "$darkGrey     Skipping rule  - Disabled$reset"
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule  - Disabled$reset"
                 $skip = $true
             } else {
-                Write-Host "$green + $($ruleObject.RuleName)$reset"
-                Write-Host "$green     Including rule$reset"
+                Write-Host "$green + $($ruleObject.RuleName) - Including rule$reset"
                 $skip = $false
             }
 
