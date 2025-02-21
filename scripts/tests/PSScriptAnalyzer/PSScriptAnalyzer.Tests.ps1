@@ -6,6 +6,10 @@
     'PSUseDeclaredVarsMoreThanAssignments', '',
     Justification = 'Pester blocks line of sight during analysis.'
 )]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    'PSAvoidUsingWriteHost', '',
+    Justification = 'Write-Host is used for log output.'
+)]
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory)]
@@ -16,44 +20,46 @@ Param(
 )
 
 BeforeDiscovery {
-    $settings = Import-PowerShellDataFile -Path $SettingsFilePath
-    $rules = [Collections.Generic.List[System.Collections.Specialized.OrderedDictionary]]::new()
-    $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
-    $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
-    foreach ($ruleObject in $ruleObjects) {
-        $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
-            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-            Write-Host "   Skipping rule - Exclude list" -ForegroundColor DarkGray
-            $true
-        } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-            Write-Host '   Skipping rule - Include list' -ForegroundColor DarkGray
-            $true
-        } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-            Write-Host '   Skipping rule - Severity list' -ForegroundColor DarkGray
-            $true
-        } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
-            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
-            Write-Host '   Skipping rule  - Disabled' -ForegroundColor DarkGray
-            $true
-        } else {
-            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor Green
-            $false
-        }
-
-        $rules.Add(
-            [ordered]@{
-                RuleName    = $ruleObject.RuleName
-                CommonName  = $ruleObject.CommonName
-                Severity    = $ruleObject.Severity
-                Description = $ruleObject.Description
-                Skip        = $skip
+    LogGroup "PSScriptAnalyzer tests using settings file [$SettingsFilePath]" {
+        $settings = Import-PowerShellDataFile -Path $SettingsFilePath
+        $rules = [Collections.Generic.List[System.Collections.Specialized.OrderedDictionary]]::new()
+        $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
+        $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
+        foreach ($ruleObject in $ruleObjects) {
+            $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Exclude list' -ForegroundColor DarkGray
+                $true
+            } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Include list' -ForegroundColor DarkGray
+                $true
+            } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Severity list' -ForegroundColor DarkGray
+                $true
+            } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule  - Disabled' -ForegroundColor DarkGray
+                $true
+            } else {
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor Green
+                $false
             }
-        )
+
+            $rules.Add(
+                [ordered]@{
+                    RuleName    = $ruleObject.RuleName
+                    CommonName  = $ruleObject.CommonName
+                    Severity    = $ruleObject.Severity
+                    Description = $ruleObject.Description
+                    Skip        = $skip
+                }
+            )
+        }
+        Write-Warning "Discovered [$($rules.Count)] rules"
+        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
     }
-    Write-Warning "Discovered [$($rules.Count)] rules"
-    $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
 }
 
 Describe "PSScriptAnalyzer tests using settings file [$relativeSettingsFilePath]" {
