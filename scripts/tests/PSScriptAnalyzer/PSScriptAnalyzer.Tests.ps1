@@ -31,6 +31,9 @@ BeforeDiscovery {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the severity list" -Verbose
             $true
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
+            Write-Verbose "Rules:    $($settings.Rules)" -Verbose
+            Write-Verbose "Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))"
+            Write-Verbose "Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)"
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
             $true
         } else {
