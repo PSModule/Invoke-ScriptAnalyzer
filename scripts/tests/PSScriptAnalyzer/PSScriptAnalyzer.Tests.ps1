@@ -26,7 +26,7 @@ BeforeDiscovery {
         $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
         $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
 
-        Write-GitHubNotice -Message "`e]8;;https://example.com`e\Click here`e]8;;`e\"
+        $PSStyle.OutputRendering = 'Ansi'
 
         foreach ($ruleObject in $ruleObjects) {
             if ($ruleObject.RuleName -in $settings.ExcludeRules) {
