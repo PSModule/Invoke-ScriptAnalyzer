@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write # Required to create releases
-  pull-requests: write # Required to create comments on the PRs
+  contents: write
+  pull-requests: write
 
 jobs:
   Auto-Release:
@@ -31,4 +31,6 @@ jobs:
       - name: Auto-Release
         uses: PSModule/Auto-Release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }} # Used for GitHub CLI authentication
+        with:
+          IncrementalPrerelease: false
