@@ -59,7 +59,7 @@
         'PSProvideCommentHelp'
         'PSUseConsistentIndentation'
     )
-    IncludeDefaultRules = $true
+    IncludeDefaultRules = $false
     Severity            = @(
         'Error'
         'Warning'
