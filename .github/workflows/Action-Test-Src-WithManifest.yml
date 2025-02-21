@@ -36,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           Path: tests/srcWithManifestTestRepo
-          Test: SourceCode
+          Settings: SourceCode
 
       - name: Status
         shell: pwsh

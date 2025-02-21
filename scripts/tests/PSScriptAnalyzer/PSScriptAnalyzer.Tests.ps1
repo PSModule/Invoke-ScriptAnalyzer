@@ -1,14 +1,10 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-    'PSReviewUnusedParameter', 'Path',
-    Justification = 'Path is being used.'
+    'PSReviewUnusedParameter', '',
+    Justification = 'Pester blocks line of sight during analysis.'
 )]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-    'PSReviewUnusedParameter', 'SettingsFilePath',
-    Justification = 'SettingsFilePath is being used.'
-)]
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-    'PSUseDeclaredVarsMoreThanAssignments', 'relativeSettingsFilePath',
-    Justification = 'relativeSettingsFilePath is being used.'
+    'PSUseDeclaredVarsMoreThanAssignments', '',
+    Justification = 'Pester blocks line of sight during analysis.'
 )]
 [CmdLetBinding()]
 Param(
