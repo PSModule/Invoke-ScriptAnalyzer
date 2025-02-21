@@ -22,27 +22,23 @@ BeforeDiscovery {
     $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
     foreach ($ruleObject in $ruleObjects) {
         $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
-            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is in the exclude list" -Verbose
-            Write-Verbose "  Exclude: $($settings.ExcludeRules)" -Verbose
-            Write-Verbose "  Rule is excluded: $($ruleObject.RuleName -in $($settings.ExcludeRules))" -Verbose
+            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+            Write-Host "   Skipping rule - Exclude list" -ForegroundColor DarkGray
             $true
         } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the include list" -Verbose
-            Write-Verbose "  Include: $($settings.IncludeRules)" -Verbose
-            Write-Verbose "  Rule is not included: $($ruleObject.RuleName -notin $($settings.IncludeRules))" -Verbose
+            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+            Write-Host '   Skipping rule - Include list' -ForegroundColor DarkGray
             $true
         } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the severity list" -Verbose
-            Write-Verbose "  Severity: $($settings.Severity)" -Verbose
-            Write-Verbose "  Severity not included: $($ruleObject.Severity -notin $($settings.Severity))" -Verbose
+            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+            Write-Host '   Skipping rule - Severity list' -ForegroundColor DarkGray
             $true
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
-            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
-            Write-Verbose "  Rules:    $($settings.Rules)" -Verbose
-            Write-Verbose "  Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))" -Verbose
-            Write-Verbose "  Enable:   $($settings.Rules[$ruleObject.RuleName].Enable)" -Verbose
+            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+            Write-Host '   Skipping rule  - Disabled' -ForegroundColor DarkGray
             $true
         } else {
+            Write-Host " - $($ruleObject.RuleName)" -ForegroundColor Green
             $false
         }
 
