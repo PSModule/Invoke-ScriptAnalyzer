@@ -31,7 +31,7 @@
             Placement               = 'begin'
         }
         PSUseConsistentIndentation         = @{
-            Enable              = $true
+            Enable              = $false
             IndentationSize     = 4
             PipelineIndentation = 'IncreaseIndentationForFirstPipeline'
             Kind                = 'space'
@@ -51,14 +51,15 @@
     }
     ExcludeRules = @(
         'PSUseConsistentWhitespace'
+        'PSAvoidUsingWriteHost'
     )
-    # IncludeRules = @(
-    #     'PSAvoidSemicolonsAsLineTerminators'
-    #     'PSPlaceCloseBrace'
-    #     'PSPlaceOpenBrace'
-    #     'PSProvideCommentHelp'
-    #     'PSUseConsistentIndentation'
-    # )
+    IncludeRules = @(
+        'PSAvoidSemicolonsAsLineTerminators'
+        'PSPlaceCloseBrace'
+        # 'PSPlaceOpenBrace'
+        'PSProvideCommentHelp'
+        'PSUseConsistentIndentation'
+    )
     Severity     = @(
         'Error'
         'Warning'
