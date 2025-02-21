@@ -30,23 +30,23 @@ BeforeDiscovery {
 
         foreach ($ruleObject in $ruleObjects) {
             if ($ruleObject.RuleName -in $settings.ExcludeRules) {
-                Write-Host " - $($ruleObject.RuleName)"
-                Write-Host '   Skipping rule - Exclude list'
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Exclude list' -ForegroundColor DarkGray
                 $skip = $true
             } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-                Write-Host " - $($ruleObject.RuleName)"
-                Write-Host '   Skipping rule - Include list'
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Include list' -ForegroundColor DarkGray
                 $skip = $true
             } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-                Write-Host " - $($ruleObject.RuleName)"
-                Write-Host '   Skipping rule - Severity list'
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule - Severity list' -ForegroundColor DarkGray
                 $skip = $true
             } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enable) {
-                Write-Host " - $($ruleObject.RuleName)"
-                Write-Host '   Skipping rule  - Disabled'
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor DarkGray
+                Write-Host '   Skipping rule  - Disabled' -ForegroundColor DarkGray
                 $skip = $true
             } else {
-                Write-Host " - $($ruleObject.RuleName)"
+                Write-Host " - $($ruleObject.RuleName)" -ForegroundColor Green
                 $skip = $false
             }
 
