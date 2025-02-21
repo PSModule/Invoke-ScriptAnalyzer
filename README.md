@@ -98,6 +98,8 @@ For detailed documentation on the format of the settings file, see the
 ## References and Links
 
 - [PSScriptAnalyzer Documentation](https://learn.microsoft.com/powershell/module/psscriptanalyzer/)
-- [GitHub Super-Linter](https://github.com/github/super-linter)
+- [PSScriptAnalyzer Module Overview](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/overview?view=ps-modules)
+- [PSScriptAnalyzer Rules](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/readme?view=ps-modules)
 - [PSScriptAnalyzer GitHub Repository](https://github.com/PowerShell/PSScriptAnalyzer)
 - [Custom Rules in PSScriptAnalyzer](https://docs.microsoft.com/powershell/scripting/developer/hosting/psscriptanalyzer-extensibility)
+- [GitHub Super-Linter](https://github.com/github/super-linter)

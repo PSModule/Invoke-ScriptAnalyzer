@@ -22,15 +22,19 @@ BeforeDiscovery {
     $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
     foreach ($ruleObject in $ruleObjects) {
         $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
+            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is in the exclude list" -Verbose
             $true
         } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
-            $skip = $true
+            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the include list" -Verbose
+            $true
         } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
-            $skip = $true
+            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the severity list" -Verbose
+            $true
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
-            $skip = $true
+            Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
+            $true
         } else {
-            $skip = $false
+            $false
         }
 
         $rules.Add(
