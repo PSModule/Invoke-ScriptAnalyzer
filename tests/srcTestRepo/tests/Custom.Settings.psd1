@@ -1,5 +1,5 @@
 ﻿@{
-    Rules               = @{
+    Rules        = @{
         PSAlignAssignmentStatement         = @{
             Enable         = $true
             CheckHashtable = $true
@@ -49,17 +49,17 @@
             IgnoreAssignmentOperatorInsideHashTable = $true
         }
     }
-    ExcludeRules        = @(
+    ExcludeRules = @(
         'PSUseConsistentWhitespace'
     )
-    IncludeRules        = @(
+    IncludeRules = @(
         'PSAvoidSemicolonsAsLineTerminators'
         'PSPlaceCloseBrace'
         'PSPlaceOpenBrace'
         'PSProvideCommentHelp'
         'PSUseConsistentIndentation'
     )
-    Severity            = @(
+    Severity     = @(
         'Error'
         'Warning'
     )

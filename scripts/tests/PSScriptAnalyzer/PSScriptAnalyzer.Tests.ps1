@@ -44,16 +44,6 @@ BeforeDiscovery {
                 Severity    = $ruleObject.Severity
                 Description = $ruleObject.Description
                 Skip        = $skip
-                <#
-                    RuleName          : PSDSCUseVerboseMessageInDSCResource
-                    CommonName        : Use verbose message in DSC resource
-                    Description       : It is a best practice to emit informative, verbose messages in DSC resource functions.
-                                        This helps in debugging issues when a DSC configuration is executed.
-                    SourceType        : Builtin
-                    SourceName        : PSDSC
-                    Severity          : Information
-                    ImplementingType  : Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.UseVerboseMessageInDSCResource
-                #>
             }
         )
     }
