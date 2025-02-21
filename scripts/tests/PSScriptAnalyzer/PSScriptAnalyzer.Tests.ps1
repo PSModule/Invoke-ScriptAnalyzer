@@ -39,8 +39,8 @@ BeforeDiscovery {
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
             Write-Verbose "  Rules:    $($settings.Rules)" -Verbose
-            Write-Verbose "  Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))"
-            Write-Verbose "  Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)"
+            Write-Verbose "  Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))" -Verbose
+            Write-Verbose "  Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)" -Verbose
             $true
         } else {
             $false
