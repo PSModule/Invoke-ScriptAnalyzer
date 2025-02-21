@@ -23,18 +23,24 @@ BeforeDiscovery {
     foreach ($ruleObject in $ruleObjects) {
         $skip = if ($ruleObject.RuleName -in $settings.ExcludeRules) {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is in the exclude list" -Verbose
+            Write-Verbose "  Exclude: $($settings.ExcludeRules)" -Verbose
+            Write-Verbose "  Rule is excluded: $($ruleObject.RuleName -in $($settings.ExcludeRules))" -Verbose
             $true
         } elseif ($settings.IncludeRules -and $ruleObject.RuleName -notin $settings.IncludeRules) {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the include list" -Verbose
+            Write-Verbose "  Include: $($settings.IncludeRules)" -Verbose
+            Write-Verbose "  Rule is not included: $($ruleObject.RuleName -notin $($settings.IncludeRules))" -Verbose
             $true
         } elseif ($settings.Severity -and $ruleObject.Severity -notin $settings.Severity) {
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is not in the severity list" -Verbose
+            Write-Verbose "  Severity: $($settings.Severity)" -Verbose
+            Write-Verbose "  Severity not included: $($ruleObject.Severity -notin $($settings.Severity))" -Verbose
             $true
         } elseif ($settings.Rules -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and -not $settings.Rules[$ruleObject.RuleName].Enabled) {
-            Write-Verbose "Rules:    $($settings.Rules)" -Verbose
-            Write-Verbose "Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))"
-            Write-Verbose "Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)"
             Write-Verbose "Skipping rule [$($ruleObject.RuleName)] - Because it is disabled" -Verbose
+            Write-Verbose "  Rules:    $($settings.Rules)" -Verbose
+            Write-Verbose "  Contains: $($settings.Rules.ContainsKey($ruleObject.RuleName))"
+            Write-Verbose "  Enabled:  $($settings.Rules[$ruleObject.RuleName].Enabled)"
             $true
         } else {
             $false
