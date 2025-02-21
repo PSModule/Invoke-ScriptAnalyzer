@@ -35,7 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          Path: tests/srcWithManifestTestRepo
+          Path: tests/srcWithManifestTestRepo/src
           Settings: SourceCode
 
       - name: Status
