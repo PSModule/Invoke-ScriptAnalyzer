@@ -1,4 +1,3 @@
-```markdown
 # Invoke-ScriptAnalyzer (by PSModule)
 
 This repository contains a GitHub Action that runs PSScriptAnalyzer on your code.
@@ -102,8 +101,3 @@ For detailed documentation on the format of the settings file, see the
 - [GitHub Super-Linter](https://github.com/github/super-linter)
 - [PSScriptAnalyzer GitHub Repository](https://github.com/PowerShell/PSScriptAnalyzer)
 - [Custom Rules in PSScriptAnalyzer](https://docs.microsoft.com/powershell/scripting/developer/hosting/psscriptanalyzer-extensibility)
-
-## License
-
-This project is licensed under the MIT License.
-```
