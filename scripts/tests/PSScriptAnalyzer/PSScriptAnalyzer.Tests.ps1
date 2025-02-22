@@ -6,6 +6,10 @@
     'PSUseDeclaredVarsMoreThanAssignments', '',
     Justification = 'Pester blocks line of sight during analysis.'
 )]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    'PSAvoidUsingWriteHost', '',
+    Justification = 'Write-Host is used for log output.'
+)]
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory)]
@@ -16,33 +20,49 @@ Param(
 )
 
 BeforeDiscovery {
-    $settings = Import-PowerShellDataFile -Path $SettingsFilePath
-    $rules = [Collections.Generic.List[System.Collections.Specialized.OrderedDictionary]]::new()
-    $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
-    $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
-    foreach ($ruleObject in $ruleObjects) {
-        $rules.Add(
-            [ordered]@{
-                RuleName    = $ruleObject.RuleName
-                CommonName  = $ruleObject.CommonName
-                Severity    = $ruleObject.Severity
-                Description = $ruleObject.Description
-                Skip        = $ruleObject.RuleName -in $settings.ExcludeRules
-                <#
-                    RuleName          : PSDSCUseVerboseMessageInDSCResource
-                    CommonName        : Use verbose message in DSC resource
-                    Description       : It is a best practice to emit informative, verbose messages in DSC resource functions.
-                                        This helps in debugging issues when a DSC configuration is executed.
-                    SourceType        : Builtin
-                    SourceName        : PSDSC
-                    Severity          : Information
-                    ImplementingType  : Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.UseVerboseMessageInDSCResource
-                #>
+    LogGroup "PSScriptAnalyzer tests using settings file [$SettingsFilePath]" {
+        $settings = Import-PowerShellDataFile -Path $SettingsFilePath
+        $rules = [Collections.Generic.List[System.Collections.Specialized.OrderedDictionary]]::new()
+        $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
+        $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
+
+        $PSStyle.OutputRendering = 'Ansi'
+        $darkGrey = $PSStyle.Foreground.FromRgb(85, 85, 85)
+        $green = $PSStyle.Foreground.Green
+        $reset = $PSStyle.Reset
+
+        foreach ($ruleObject in $ruleObjects) {
+            if ($settings.ContainsKey('ExcludeRules') -and $ruleObject.RuleName -in $settings.ExcludeRules) {
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Exclude list$reset"
+                $skip = $true
+            } elseif ($settings.ContainsKey('IncludeRules') -and $ruleObject.RuleName -notin $settings.IncludeRules) {
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Include list$reset"
+                $skip = $true
+            } elseif ($settings.ContainsKey('Severity') -and $ruleObject.Severity -notin $settings.Severity) {
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule - Severity list$reset"
+                $skip = $true
+            } elseif ($settings.ContainsKey('Rules') -and $settings.Rules.ContainsKey($ruleObject.RuleName) -and
+                -not $settings.Rules[$ruleObject.RuleName].Enable) {
+                Write-Host "$darkGrey - $($ruleObject.RuleName) - Skipping rule  - Disabled$reset"
+                $skip = $true
+            } else {
+                Write-Host "$green + $($ruleObject.RuleName) - Including rule$reset"
+                $skip = $false
             }
-        )
+
+            $rules.Add(
+                [ordered]@{
+                    RuleName    = $ruleObject.RuleName
+                    CommonName  = $ruleObject.CommonName
+                    Severity    = $ruleObject.Severity
+                    Description = $ruleObject.Description
+                    Skip        = $skip
+                }
+            )
+        }
+        Write-Warning "Discovered [$($rules.Count)] rules"
+        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
     }
-    Write-Warning "Discovered [$($rules.Count)] rules"
-    $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
 }
 
 Describe "PSScriptAnalyzer tests using settings file [$relativeSettingsFilePath]" {

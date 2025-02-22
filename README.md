@@ -1,72 +1,66 @@
-# Invoke-ScriptAnalyzer (by PSModule)
+# Invoke-ScriptAnalyzer
 
-This repository contains a GitHub Action that runs PSScriptAnalyzer on your code.
+This repository contains a GitHub Action that runs [`PSScriptAnalyzer`](https://github.com/PowerShell/PSScriptAnalyzer) on your code.
 The action analyzes PowerShell scripts using a hashtable-based settings file to
 customize rule selection, severity filtering, and custom rule inclusion.
 
-> **Note:** This repository includes automated tests that run via Pester to ensure
-> your settings file is working as expected.
+## Dependencies
 
-## Action Details
-
-- **Name:** Invoke-ScriptAnalyzer (by PSModule)
-- **Description:** Runs PSScriptAnalyzer on the code.
-- **Author:** PSModule
-- **Branding:**
-  Icon: `check-square`
-  Color: `gray-dark`
+- This action.
+- [`PSScriptAnalyzer` module](https://github.com/PowerShell/PSScriptAnalyzer).
+- [`Invoke-Pester` action](https://github.com/PSModule/Invoke-Pester)
+- [`Pester` module](https://github.com/Pester/Pester)
+- [`GitHub-Script` action](https://github.com/PSModule/GitHub-Script)
+- [`GitHub` module](https://github.com/PSModule/GitHub)
 
 ## Inputs
 
-| Input               | Description                                                       | Required | Default                                                                     |
-|---------------------|-------------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
-| **Path**            | The path to the code to test.                                     | Yes      | `${{ github.workspace }}`                                                   |
-| **Settings**        | The type of tests to run: `Module`, `SourceCode`, or `Custom`.    | No       | `Custom`                                                                    |
-| **SettingsFilePath**| If `Custom` is selected, the path to the settings file.           | No       | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
+| Input               | Description                                                    | Required | Default                                                                     |
+|---------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
+| **Path**            | The path to the code to test.                                  | Yes      | `${{ github.workspace }}`                                                   |
+| **Settings**        | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | No       | `Custom`                                                                    |
+| **SettingsFilePath**| If `Custom` is selected, the path to the settings file.        | No       | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
 
 ## Outputs
 
-| Output  | Description                           | Value                                      |
-|---------|---------------------------------------|--------------------------------------------|
-| passed  | Indicates if the tests passed.      | `${{ steps.test.outputs.Passed }}`         |
-
-## Files Overview
-
-- **action.yml**
-  Describes the action inputs, outputs, and run steps. The action uses a
-  composite run steps approach with two main steps:
-  1. **Get test paths:** Uses a script to resolve paths and settings.
-  2. **Invoke-Pester:** Runs Pester tests against PSScriptAnalyzer.
-
-- **scripts/main.ps1**
-  Determines the correct settings file path based on the test type. It
-  supports testing a module, source code, or using a custom settings file.
-
-- **scripts/tests/PSScriptAnalyzer/**
-  Contains Pester tests that run PSScriptAnalyzer using the provided settings
-  file. The tests check for issues reported by PSScriptAnalyzer based on rule
-  configuration.
+| Output   | Description                    | Value                              |
+|----------|--------------------------------|------------------------------------|
+| `passed` | Indicates if the tests passed. | `${{ steps.test.outputs.Passed }}` |
 
 ## How It Works
 
-1. **Path Resolution:**
-   The action reads inputs and determines the code path, test path, and the
-   settings file path. For custom settings, it uses the file at:
-   ```powershell
-   .github/linters/.powershell-psscriptanalyzer.psd1
-   ```
-   Otherwise, it uses a default settings file from the test folder.
+1. **Set a Path**
+   Choose a path for your code to test into the `Path` input. This can be a
+   directory or a file.
 
-2. **Pester Testing:**
-   The tests import the settings file and use `Invoke-ScriptAnalyzer` to scan
+2. **Choose settings**
+   Choose the type of tests to run by setting the `Settings` input. The options
+   are `Module`, `SourceCode`, or `Custom`. The default is `Custom`.
+
+   The predefined settings:
+    - [`Module`](./scripts/tests/PSScriptAnalyzer/Module.Settings.psd1): Analyzes a module following PSModule standards.
+    - [`SourceCode`](./scripts/tests/PSScriptAnalyzer/SourceCode.Settings.psd1): Analyzes the source code following PSModule standards.
+
+    You can also create a custom settings file to customize the analysis. The
+    settings file is a hashtable that defines the rules to include, exclude, or
+    customize. The settings file is in the format of a `.psd1` file.
+
+    For more info on how to create a settings file, see the [Settings Documentation](./Settings.md) file.
+
+3. **Run the Action**
+   The tests import the settings file and use `Invoke-ScriptAnalyzer` to analyze
    the code. Each rule is evaluated, and if a rule violation is found, the test
    will fail for that rule. Rules that are marked to be skipped (via exclusions
    in the settings file) are automatically skipped in the test.
 
-3. **Automation:**
-   Designed for CI/CD, this action integrates with GitHub Actions, Azure Pipelines,
-   and other systems. The settings file customizes analysis, letting you control
-   rule inclusion, severity filtering, and custom rule paths.
+   To be clear; the action follows the settings file to determine which rules to skip.
+
+4. **View the Results**
+    The action outputs the results of the tests. If the tests pass, the action
+    will return a `passed` output with a value of `true`. If the tests fail, the
+    action will return a `passed` output with a value of `false`.
+
+    The action also outputs the results of the tests to the console.
 
 ## Example Workflow
 
@@ -81,23 +75,21 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Invoke PSScriptAnalyzer
         uses: PSModule/Invoke-ScriptAnalyzer@v1
         with:
           Path: ${{ github.workspace }}
-          Settings: Custom
-          SettingsFilePath: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
+          Settings: SourceCode
 ```
-
-## Appendix: Settings File Documentation
-
-For detailed documentation on the format of the settings file, see the
-[Settings File Documentation](./SettingsFileDocumentation.md) file.
 
 ## References and Links
 
 - [PSScriptAnalyzer Documentation](https://learn.microsoft.com/powershell/module/psscriptanalyzer/)
-- [GitHub Super-Linter](https://github.com/github/super-linter)
+- [PSScriptAnalyzer Module Overview](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/overview?view=ps-modules)
+- [PSScriptAnalyzer Rules](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/readme?view=ps-modules)
 - [PSScriptAnalyzer GitHub Repository](https://github.com/PowerShell/PSScriptAnalyzer)
 - [Custom Rules in PSScriptAnalyzer](https://docs.microsoft.com/powershell/scripting/developer/hosting/psscriptanalyzer-extensibility)
+- [GitHub Super-Linter](https://github.com/github/super-linter)

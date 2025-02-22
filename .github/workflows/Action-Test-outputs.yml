@@ -21,4 +21,3 @@ jobs:
       TestType: outputs
       Path: tests/outputTestRepo/outputs/modules/PSModuleTest
       Settings: Module
-      SettingsFilePath:
