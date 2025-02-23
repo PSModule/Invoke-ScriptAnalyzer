@@ -66,7 +66,7 @@ BeforeDiscovery {
 Describe "PSScriptAnalyzer" {
     BeforeAll {
         $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
-        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$SettingsFilePath]" {
+        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
             $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
             Write-Warning "Found [$($testResults.Count)] issues"
         }
