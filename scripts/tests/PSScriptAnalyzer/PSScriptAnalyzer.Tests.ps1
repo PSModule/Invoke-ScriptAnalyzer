@@ -82,7 +82,7 @@ Describe 'PSScriptAnalyzer' {
             $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
         }
         LogGroup "TestResults [$($testResults.Count)]" {
-            $testResults
+            $testResults | Format-Table -AutoSize
         }
     }
 
