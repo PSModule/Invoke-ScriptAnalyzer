@@ -61,38 +61,41 @@ BeforeDiscovery {
             )
         }
     }
-    $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
-        $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
-    } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
-        $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
-    } else {
-        $SettingsFilePath
-    }
-    [pscustomobject]@{
-        relativeSettingsFilePath = $relativeSettingsFilePath
-        SettingsFilePath         = $SettingsFilePath
-        PSScriptRoot             = $PSScriptRoot
-        GITHUB_WORKSPACE         = $env:GITHUB_WORKSPACE
-    }
-    LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
-        $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
-    }
-    LogGroup "TestResults [$($testResults.Count)]" {
-        $testResults | ForEach-Object {
-            $_ | Format-List | Out-String -Stream | ForEach-Object {
-                Write-Verbose $_ -Verbose
-            }
-        }
-    }
 }
 
 Describe 'PSScriptAnalyzer' {
+    BeforeAll {
+        $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
+            $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+        } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
+            $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+        } else {
+            $SettingsFilePath
+        }
+        [pscustomobject]@{
+            relativeSettingsFilePath = $relativeSettingsFilePath
+            SettingsFilePath         = $SettingsFilePath
+            PSScriptRoot             = $PSScriptRoot
+            GITHUB_WORKSPACE         = $env:GITHUB_WORKSPACE
+        }
+        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
+            $script:testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
+        }
+        LogGroup "TestResults [$($script:testResults.Count)]" {
+            $script:testResults | ForEach-Object {
+                $_ | Format-List | Out-String -Stream | ForEach-Object {
+                    Write-Verbose $_ -Verbose
+                }
+            }
+        }
+    }
+
     foreach ($Severety in $Severeties) {
         Context "Severity: $Severety" {
             foreach ($rule in $rules | Where-Object -Property Severity -EQ $Severety) {
-                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip {
+                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @( $rule.RuleName) {
                     $issues = [Collections.Generic.List[string]]::new()
-                    $testResults | Where-Object -Property RuleName -EQ $rule.RuleName | ForEach-Object {
+                    $script:testResults | Where-Object -Property RuleName -EQ $_ | ForEach-Object {
                         $relativePath = $_.ScriptPath.Replace($Path, '').Trim('\').Trim('/')
                         $issues.Add(([Environment]::NewLine + " - $relativePath`:L$($_.Line):C$($_.Column)"))
                     }
