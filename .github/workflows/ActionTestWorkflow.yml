@@ -25,8 +25,8 @@ jobs:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     outputs:
-      outcome: ${{ steps.action-test.outcome }}
-      conclusion: ${{ steps.action-test.conclusion }}
+      Outcome: ${{ steps.action-test.outcome }}
+      Conclusion: ${{ steps.action-test.conclusion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

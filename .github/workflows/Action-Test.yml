@@ -68,31 +68,31 @@ jobs:
             Install-PSResource -Name Markdown -Repository PSGallery -TrustRepository
 
             # Build an array of objects for each job
-            $ActionTestSrcSourceCodeOutcome = '${{ needs.ActionTestSrcSourceCode.outputs.outcome }}'
+            $ActionTestSrcSourceCodeOutcome = ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
             $ActionTestSrcSourceCodeExpectedOutcome = "success"
             $ActionTestSrcSourceCodeOutcomeResult = $ActionTestSrcSourceCodeOutcome -eq $ActionTestSrcSourceCodeExpectedOutcome
-            $ActionTestSrcSourceCodeConclusion = '${{ needs.ActionTestSrcSourceCode.outputs.conclusion }}'
+            $ActionTestSrcSourceCodeConclusion = ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
             $ActionTestSrcSourceCodeExpectedConclusion = "success"
             $ActionTestSrcSourceCodeConclusionResult = $ActionTestSrcSourceCodeConclusion -eq $ActionTestSrcSourceCodeExpectedConclusion
 
-            $ActionTestSrcCustomOutcome = '${{ needs.ActionTestSrcCustom.outputs.outcome }}'
+            $ActionTestSrcCustomOutcome = ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
             $ActionTestSrcCustomExpectedOutcome = "success"
             $ActionTestSrcCustomOutcomeResult = $ActionTestSrcCustomOutcome -eq $ActionTestSrcCustomExpectedOutcome
-            $ActionTestSrcCustomConclusion = '${{ needs.ActionTestSrcCustom.outputs.conclusion }}'
+            $ActionTestSrcCustomConclusion = ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
             $ActionTestSrcCustomExpectedConclusion = "success"
             $ActionTestSrcCustomConclusionResult = $ActionTestSrcCustomConclusion -eq $ActionTestSrcCustomExpectedConclusion
 
-            $ActionTestSrcWithManifestOutcome = '${{ needs.ActionTestSrcWithManifest.outputs.outcome }}'
+            $ActionTestSrcWithManifestOutcome = ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
             $ActionTestSrcWithManifestExpectedOutcome = "failure"
             $ActionTestSrcWithManifestOutcomeResult = $ActionTestSrcWithManifestOutcome -eq $ActionTestSrcWithManifestExpectedOutcome
-            $ActionTestSrcWithManifestConclusion = '${{ needs.ActionTestSrcWithManifest.outputs.conclusion }}'
+            $ActionTestSrcWithManifestConclusion = ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
             $ActionTestSrcWithManifestExpectedConclusion = "success"
             $ActionTestSrcWithManifestConclusionResult = $ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
 
-            $ActionTestOutputsOutcome = '${{ needs.ActionTestOutputs.outputs.outcome }}'
+            $ActionTestOutputsOutcome = ${{ needs.ActionTestOutputs.outputs.Outcome }}
             $ActionTestOutputsExpectedOutcome = "success"
             $ActionTestOutputsOutcomeResult = $ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
-            $ActionTestOutputsConclusion = '${{ needs.ActionTestOutputs.outputs.conclusion }}'
+            $ActionTestOutputsConclusion = ${{ needs.ActionTestOutputs.outputs.Conclusion }}
             $ActionTestOutputsExpectedConclusion = "success"
             $ActionTestOutputsConclusionResult = $ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
 
