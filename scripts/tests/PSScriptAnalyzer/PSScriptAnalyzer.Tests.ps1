@@ -71,6 +71,9 @@ Describe 'PSScriptAnalyzer' {
             $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
             Write-Warning "Found [$($testResults.Count)] issues"
         }
+        LogGroup "TestResults" {
+            $testResults
+        }
     }
 
     foreach ($Severety in $Severeties) {
