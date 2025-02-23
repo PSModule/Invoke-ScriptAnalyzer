@@ -1,0 +1,51 @@
+name: Action-Test
+
+run-name: "Action-Test - [${{ github.event.pull_request.title }} #${{ github.event.pull_request.number }}] by @${{ github.actor }}"
+
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  ActionTestSrcSourceCode:
+    name: Action-Test - [Src-SourceCode]
+    uses: ./.github/workflows/ActionTestWorkflow.yml
+    with:
+      TestType: Src-SourceCode
+      Path: tests/srcTestRepo/src
+      Settings: SourceCode
+
+  ActionTestSrcCustom:
+    name: Action-Test - [Src-Custom]
+    uses: ./.github/workflows/ActionTestWorkflow.yml
+    with:
+      TestType: Src-Custom
+      Path: tests/srcTestRepo/src
+      Settings: Custom
+      SettingsFilePath: tests/srcTestRepo/tests/Custom.Settings.psd1
+
+  ActionTestSrcWithManifest:
+    name: Action-Test - [Src-WithManifest]
+    uses: ./.github/workflows/ActionTestWorkflow.yml
+    with:
+      TestType: Src-WithManifest
+      Path: tests/srcWithManifestTestRepo/src
+      Settings: SourceCode
+
+  ActionTestOutputs:
+    name: Action-Test - [outputs]
+    uses: ./.github/workflows/ActionTestWorkflow.yml
+    with:
+      TestType: outputs
+      Path: tests/outputTestRepo/outputs/modules/PSModuleTest
+      Settings: Module

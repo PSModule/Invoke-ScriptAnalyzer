@@ -22,14 +22,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    name: Action-Test [outputs] - [${{ matrix.os }}]
+    name: '${{ inputs.Path }} - ${{ inputs.TestType }} [${{ matrix.os }}]'
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Initialize environment
-        uses: PSModule/Initialize-PSModule@main
 
       - name: Action-Test
         uses: ./
@@ -41,10 +38,6 @@ jobs:
 
       - name: Status
         shell: pwsh
-        env:
-          PASSED: ${{ steps.action-test.outputs.passed }}
         run: |
-          Write-Host "Passed: [$env:PASSED]"
-          if ($env:PASSED -ne 'true') {
-            exit 1
-          }
+          Write-Host "Outcome: ${{ steps.action-test.outcome }}"
+          Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
