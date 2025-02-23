@@ -78,7 +78,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Invoke PSScriptAnalyzer
-        uses: PSModule/Invoke-ScriptAnalyzer@v1
+        uses: PSModule/Invoke-ScriptAnalyzer@v2
         with:
           Path: ${{ github.workspace }}
           Settings: SourceCode
