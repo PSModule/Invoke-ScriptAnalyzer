@@ -67,8 +67,10 @@ BeforeDiscovery {
 
 Describe "PSScriptAnalyzer" {
     BeforeAll {
-        $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose:$false
-        Write-Warning "Found [$($testResults.Count)] issues"
+        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
+            $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
+            Write-Warning "Found [$($testResults.Count)] issues"
+        }
     }
 
     foreach ($Severety in $Severeties) {
