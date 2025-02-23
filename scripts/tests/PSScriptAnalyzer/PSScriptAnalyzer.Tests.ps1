@@ -65,7 +65,7 @@ BeforeDiscovery {
     }
 }
 
-Describe "PSScriptAnalyzer tests using settings file [$relativeSettingsFilePath]" {
+Describe "PSScriptAnalyzer" {
     BeforeAll {
         $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose:$false
         Write-Warning "Found [$($testResults.Count)] issues"
