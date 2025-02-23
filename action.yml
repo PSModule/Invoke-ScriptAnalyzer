@@ -19,11 +19,6 @@ inputs:
     required: false
     default: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
 
-outputs:
-  passed:
-    description: If the tests passed.
-    value: ${{ steps.test.outputs.Passed }}
-
 runs:
   using: composite
   steps:
@@ -38,7 +33,7 @@ runs:
         Script: ${{ github.action_path }}/scripts/main.ps1
 
     - name: Invoke-Pester
-      uses: PSModule/Invoke-Pester@v2
+      uses: PSModule/Invoke-Pester@v3
       id: test
       env:
         Settings: ${{ fromJson(steps.paths.outputs.result).Settings }}
