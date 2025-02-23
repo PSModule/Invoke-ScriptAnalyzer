@@ -23,9 +23,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 
 ## Outputs
 
-| Output   | Description                    | Value                              |
-|----------|--------------------------------|------------------------------------|
-| `passed` | Indicates if the tests passed. | `${{ steps.test.outputs.Passed }}` |
+N/A
 
 ## How It Works
 
@@ -56,11 +54,12 @@ customize rule selection, severity filtering, and custom rule inclusion.
    To be clear; the action follows the settings file to determine which rules to skip.
 
 4. **View the Results**
-    The action outputs the results of the tests. If the tests pass, the action
-    will return a `passed` output with a value of `true`. If the tests fail, the
-    action will return a `passed` output with a value of `false`.
+    The action outputs the results of the tests to goth logs and step summary. If the tests pass, the actions `outcome` will be `success`.
+    If the tests fail, the actions outcome will be `failure`. To make the workflow continue even if the tests fail, you can set the
+    `continue-on-error` option to `true`. Use this built-in feature to stop the workflow from failing so that you can aggregate the status of tests
+    across multiple jobs.
 
-    The action also outputs the results of the tests to the console.
+    An example of how this is done can be seen in the [Action-Test workflow](.github/workflows/Action-Test.yml) file.
 
 ## Example Workflow
 
