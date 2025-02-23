@@ -60,14 +60,13 @@ BeforeDiscovery {
                 }
             )
         }
-        Write-Warning "Discovered [$($rules.Count)] rules"
-        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
     }
 }
 
 Describe "PSScriptAnalyzer" {
     BeforeAll {
-        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
+        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
+        LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$SettingsFilePath]" {
             $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
             Write-Warning "Found [$($testResults.Count)] issues"
         }
