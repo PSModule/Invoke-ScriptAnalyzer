@@ -78,11 +78,12 @@ Describe 'PSScriptAnalyzer' {
             PSScriptRoot             = $PSScriptRoot
             GITHUB_WORKSPACE         = $env:GITHUB_WORKSPACE
         }
+        $Path = Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
         LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
-            $script:testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
+            $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
         }
-        LogGroup "TestResults [$($script:testResults.Count)]" {
-            $script:testResults | ForEach-Object {
+        LogGroup "TestResults [$($testResults.Count)]" {
+            $testResults | ForEach-Object {
                 $_ | Format-List | Out-String -Stream | ForEach-Object {
                     Write-Verbose $_ -Verbose
                 }
@@ -95,7 +96,7 @@ Describe 'PSScriptAnalyzer' {
             foreach ($rule in $rules | Where-Object -Property Severity -EQ $Severety) {
                 It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @{ Rule = $rule } {
                     $issues = [Collections.Generic.List[string]]::new()
-                    $script:testResults | Where-Object -Property RuleName -EQ $Rule.RuleName | ForEach-Object {
+                    $testResults | Where-Object { $_.RuleName -eq $Rule.RuleName } | ForEach-Object {
                         $relativePath = $_.ScriptPath.Replace($Path, '').Trim('\').Trim('/')
                         $issues.Add(([Environment]::NewLine + " - $relativePath`:L$($_.Line):C$($_.Column)"))
                     }
