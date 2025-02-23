@@ -93,9 +93,9 @@ Describe 'PSScriptAnalyzer' {
     foreach ($Severety in $Severeties) {
         Context "Severity: $Severety" {
             foreach ($rule in $rules | Where-Object -Property Severity -EQ $Severety) {
-                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @( $rule.RuleName) {
+                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @{ Rule = $rule } {
                     $issues = [Collections.Generic.List[string]]::new()
-                    $script:testResults | Where-Object -Property RuleName -EQ $_ | ForEach-Object {
+                    $script:testResults | Where-Object -Property RuleName -EQ $Rule.RuleName | ForEach-Object {
                         $relativePath = $_.ScriptPath.Replace($Path, '').Trim('\').Trim('/')
                         $issues.Add(([Environment]::NewLine + " - $relativePath`:L$($_.Line):C$($_.Column)"))
                     }
