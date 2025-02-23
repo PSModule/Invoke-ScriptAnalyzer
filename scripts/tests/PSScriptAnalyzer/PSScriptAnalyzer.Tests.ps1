@@ -63,9 +63,10 @@ BeforeDiscovery {
     }
 }
 
-Describe "PSScriptAnalyzer" {
+Describe 'PSScriptAnalyzer' {
     BeforeAll {
-        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
+        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, 'Action/').Trim('\').Trim('/')
+        $relativeSettingsFilePath = $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace/').Trim('\').Trim('/')
         LogGroup "Invoke-ScriptAnalyzer -Path [$Path] -Settings [$relativeSettingsFilePath]" {
             $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
             Write-Warning "Found [$($testResults.Count)] issues"
