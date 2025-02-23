@@ -18,6 +18,21 @@ inputs:
     description: If 'Custom' is selected, the path to the settings file.
     required: false
     default: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
+  Debug:
+    description: Enable debug output.
+    required: false
+    default: 'false'
+  Verbose:
+    description: Enable verbose output.
+    required: false
+    default: 'false'
+  Version:
+    description: Specifies the version of the GitHub module to be installed. The value must be an exact version.
+    required: false
+  Prerelease:
+    description: Allow prerelease versions if available.
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -30,6 +45,10 @@ runs:
         GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_Settings: ${{ inputs.Settings }}
         GITHUB_ACTION_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath: ${{ inputs.SettingsFilePath }}
       with:
+        Debug: ${{ inputs.Debug }}
+        Prerelease: ${{ inputs.Prerelease }}
+        Verbose: ${{ inputs.Verbose }}
+        Version: ${{ inputs.Version }}
         Script: ${{ github.action_path }}/scripts/main.ps1
 
     - name: Invoke-Pester
@@ -39,6 +58,10 @@ runs:
         Settings: ${{ fromJson(steps.paths.outputs.result).Settings }}
         SettingsFilePath: ${{ fromJson(steps.paths.outputs.result).SettingsFilePath }}
       with:
+        Debug: ${{ inputs.Debug }}
+        Prerelease: ${{ inputs.Prerelease }}
+        Verbose: ${{ inputs.Verbose }}
+        Version: ${{ inputs.Version }}
         TestResult_TestSuiteName: PSScriptAnalyzer
         Path: ${{ github.action_path }}/scripts/tests/PSScriptAnalyzer
         Run_Path: ${{ inputs.Path }}
