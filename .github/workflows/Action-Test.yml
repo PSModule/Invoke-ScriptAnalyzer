@@ -63,73 +63,74 @@ jobs:
     steps:
       - name: Display Aggregated Results as a Table
         uses: PSModule/Github-Script@v1
+        env:
+          ActionTestSrcSourceCodeOutcome: ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
+          ActionTestSrcSourceCodeConclusion: ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
+          ActionTestSrcCustomOutcome: ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
+          ActionTestSrcCustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
+          ActionTestSrcWithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
+          ActionTestSrcWithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+          ActionTestOutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
+          ActionTestOutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
         with:
           Script: |
             Install-PSResource -Name Markdown -Repository PSGallery -TrustRepository
 
             # Build an array of objects for each job
-            $ActionTestSrcSourceCodeOutcome = ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
             $ActionTestSrcSourceCodeExpectedOutcome = "success"
-            $ActionTestSrcSourceCodeOutcomeResult = $ActionTestSrcSourceCodeOutcome -eq $ActionTestSrcSourceCodeExpectedOutcome
-            $ActionTestSrcSourceCodeConclusion = ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
+            $ActionTestSrcSourceCodeOutcomeResult = $env:ActionTestSrcSourceCodeOutcome -eq $ActionTestSrcSourceCodeExpectedOutcome
             $ActionTestSrcSourceCodeExpectedConclusion = "success"
-            $ActionTestSrcSourceCodeConclusionResult = $ActionTestSrcSourceCodeConclusion -eq $ActionTestSrcSourceCodeExpectedConclusion
+            $ActionTestSrcSourceCodeConclusionResult = $env:ActionTestSrcSourceCodeConclusion -eq $ActionTestSrcSourceCodeExpectedConclusion
 
-            $ActionTestSrcCustomOutcome = ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
             $ActionTestSrcCustomExpectedOutcome = "success"
-            $ActionTestSrcCustomOutcomeResult = $ActionTestSrcCustomOutcome -eq $ActionTestSrcCustomExpectedOutcome
-            $ActionTestSrcCustomConclusion = ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
+            $ActionTestSrcCustomOutcomeResult = $env:ActionTestSrcCustomOutcome -eq $ActionTestSrcCustomExpectedOutcome
             $ActionTestSrcCustomExpectedConclusion = "success"
-            $ActionTestSrcCustomConclusionResult = $ActionTestSrcCustomConclusion -eq $ActionTestSrcCustomExpectedConclusion
+            $ActionTestSrcCustomConclusionResult = $env:ActionTestSrcCustomConclusion -eq $ActionTestSrcCustomExpectedConclusion
 
-            $ActionTestSrcWithManifestOutcome = ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
             $ActionTestSrcWithManifestExpectedOutcome = "failure"
-            $ActionTestSrcWithManifestOutcomeResult = $ActionTestSrcWithManifestOutcome -eq $ActionTestSrcWithManifestExpectedOutcome
-            $ActionTestSrcWithManifestConclusion = ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+            $ActionTestSrcWithManifestOutcomeResult = $env:ActionTestSrcWithManifestOutcome -eq $ActionTestSrcWithManifestExpectedOutcome
             $ActionTestSrcWithManifestExpectedConclusion = "success"
-            $ActionTestSrcWithManifestConclusionResult = $ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
+            $ActionTestSrcWithManifestConclusionResult = $env:ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
 
-            $ActionTestOutputsOutcome = ${{ needs.ActionTestOutputs.outputs.Outcome }}
             $ActionTestOutputsExpectedOutcome = "success"
-            $ActionTestOutputsOutcomeResult = $ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
-            $ActionTestOutputsConclusion = ${{ needs.ActionTestOutputs.outputs.Conclusion }}
+            $ActionTestOutputsOutcomeResult = $env:ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
             $ActionTestOutputsExpectedConclusion = "success"
-            $ActionTestOutputsConclusionResult = $ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
+            $ActionTestOutputsConclusionResult = $env:ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
 
             $jobs = @(
               [PSCustomObject]@{
                 Name               = "Action-Test - [Src-SourceCode]"
-                Outcome            = $ActionTestSrcSourceCodeOutcome
+                Outcome            = $env:ActionTestSrcSourceCodeOutcome
                 ExpectedOutcome    = $ActionTestSrcSourceCodeExpectedOutcome
                 PassedOutcome      = $ActionTestSrcSourceCodeOutcomeResult
-                Conclusion         = $ActionTestSrcSourceCodeConclusion
+                Conclusion         = $env:ActionTestSrcSourceCodeConclusion
                 ExpectedConclusion = $ActionTestSrcSourceCodeExpectedConclusion
                 PassedConclusion   = $ActionTestSrcSourceCodeConclusionResult
               },
               [PSCustomObject]@{
                 Name               = "Action-Test - [Src-Custom]"
-                Outcome            = $ActionTestSrcCustomOutcome
+                Outcome            = $env:ActionTestSrcCustomOutcome
                 ExpectedOutcome    = $ActionTestSrcCustomExpectedOutcome
                 PassedOutcome      = $ActionTestSrcCustomOutcomeResult
-                Conclusion         = $ActionTestSrcCustomConclusion
+                Conclusion         = $env:ActionTestSrcCustomConclusion
                 ExpectedConclusion = $ActionTestSrcCustomExpectedConclusion
                 PassedConclusion   = $ActionTestSrcCustomConclusionResult
               },
               [PSCustomObject]@{
                 Name               = "Action-Test - [Src-WithManifest]"
-                Outcome            = $ActionTestSrcWithManifestOutcome
+                Outcome            = $env:ActionTestSrcWithManifestOutcome
                 ExpectedOutcome    = $ActionTestSrcWithManifestExpectedOutcome
                 PassedOutcome      = $ActionTestSrcWithManifestOutcomeResult
-                Conclusion         = $ActionTestSrcWithManifestConclusion
+                Conclusion         = $env:ActionTestSrcWithManifestConclusion
                 ExpectedConclusion = $ActionTestSrcWithManifestExpectedConclusion
                 PassedConclusion   = $ActionTestSrcWithManifestConclusionResult
               },
               [PSCustomObject]@{
                 Name               = "Action-Test - [outputs]"
-                Outcome            = $ActionTestOutputsOutcome
+                Outcome            = $env:ActionTestOutputsOutcome
                 ExpectedOutcome    = $ActionTestOutputsExpectedOutcome
                 PassedOutcome      = $ActionTestOutputsOutcomeResult
-                Conclusion         = $ActionTestOutputsConclusion
+                Conclusion         = $env:ActionTestOutputsConclusion
                 ExpectedConclusion = $ActionTestOutputsExpectedConclusion
                 PassedConclusion   = $ActionTestOutputsConclusionResult
               }
