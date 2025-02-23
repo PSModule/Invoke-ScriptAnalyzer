@@ -17,15 +17,13 @@ customize rule selection, severity filtering, and custom rule inclusion.
 
 | Input               | Description                                                    | Required | Default                                                                     |
 |---------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
-| **Path**            | The path to the code to test.                                  | Yes      | `${{ github.workspace }}`                                                   |
+| **Path**            | The path to the code to test.                                  | No       | `${{ github.workspace }}`                                                   |
 | **Settings**        | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | No       | `Custom`                                                                    |
 | **SettingsFilePath**| If `Custom` is selected, the path to the settings file.        | No       | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
 
 ## Outputs
 
-| Output   | Description                    | Value                              |
-|----------|--------------------------------|------------------------------------|
-| `passed` | Indicates if the tests passed. | `${{ steps.test.outputs.Passed }}` |
+N/A
 
 ## How It Works
 
@@ -56,11 +54,12 @@ customize rule selection, severity filtering, and custom rule inclusion.
    To be clear; the action follows the settings file to determine which rules to skip.
 
 4. **View the Results**
-    The action outputs the results of the tests. If the tests pass, the action
-    will return a `passed` output with a value of `true`. If the tests fail, the
-    action will return a `passed` output with a value of `false`.
+    The action outputs the results of the tests to goth logs and step summary. If the tests pass, the actions `outcome` will be `success`.
+    If the tests fail, the actions outcome will be `failure`. To make the workflow continue even if the tests fail, you can set the
+    `continue-on-error` option to `true`. Use this built-in feature to stop the workflow from failing so that you can aggregate the status of tests
+    across multiple jobs.
 
-    The action also outputs the results of the tests to the console.
+    An example of how this is done can be seen in the [Action-Test workflow](.github/workflows/Action-Test.yml) file.
 
 ## Example Workflow
 
@@ -79,7 +78,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Invoke PSScriptAnalyzer
-        uses: PSModule/Invoke-ScriptAnalyzer@v1
+        uses: PSModule/Invoke-ScriptAnalyzer@v2
         with:
           Path: ${{ github.workspace }}
           Settings: SourceCode

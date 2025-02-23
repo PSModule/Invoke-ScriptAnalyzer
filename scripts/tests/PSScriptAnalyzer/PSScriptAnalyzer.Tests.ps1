@@ -60,24 +60,52 @@ BeforeDiscovery {
                 }
             )
         }
-        Write-Warning "Discovered [$($rules.Count)] rules"
-        $relativeSettingsFilePath = $SettingsFilePath.Replace($PSScriptRoot, '').Trim('\').Trim('/')
     }
 }
 
-Describe "PSScriptAnalyzer tests using settings file [$relativeSettingsFilePath]" {
+Describe 'PSScriptAnalyzer' {
     BeforeAll {
-        $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose:$false
-        Write-Warning "Found [$($testResults.Count)] issues"
+        $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
+            $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+        } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
+            $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+        } else {
+            $SettingsFilePath
+        }
+        $Path = Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
+        $relativePath = if ($Path.StartsWith($PSScriptRoot)) {
+            $Path.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+        } elseif ($Path.StartsWith($env:GITHUB_WORKSPACE)) {
+            $Path.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+        } else {
+            $Path
+        }
+
+        [pscustomobject]@{
+            relativeSettingsFilePath = $relativeSettingsFilePath
+            SettingsFilePath         = $SettingsFilePath
+            PSScriptRoot             = $PSScriptRoot
+            GITHUB_WORKSPACE         = $env:GITHUB_WORKSPACE
+        }
+
+        LogGroup "Invoke-ScriptAnalyzer -Path [$relativePath] -Settings [$relativeSettingsFilePath]" {
+            $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
+        }
+        LogGroup "TestResults [$($testResults.Count)]" {
+            $testResults | ForEach-Object {
+                $_ | Format-List | Out-String -Stream | ForEach-Object {
+                    Write-Verbose $_ -Verbose
+                }
+            }
+        }
     }
 
     foreach ($Severety in $Severeties) {
         Context "Severity: $Severety" {
             foreach ($rule in $rules | Where-Object -Property Severity -EQ $Severety) {
-                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip {
+                It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @{ Rule = $rule } {
                     $issues = [Collections.Generic.List[string]]::new()
-                    $testResults | Where-Object -Property RuleName -EQ $rule.RuleName | ForEach-Object {
-                        $relativePath = $_.ScriptPath.Replace($Path, '').Trim('\').Trim('/')
+                    $testResults | Where-Object { $_.RuleName -eq $Rule.RuleName } | ForEach-Object {
                         $issues.Add(([Environment]::NewLine + " - $relativePath`:L$($_.Line):C$($_.Column)"))
                     }
                     $issues -join '' | Should -BeNullOrEmpty -Because $rule.Description
@@ -85,4 +113,8 @@ Describe "PSScriptAnalyzer tests using settings file [$relativeSettingsFilePath]
             }
         }
     }
+}
+
+AfterAll {
+    $PSStyle.OutputRendering = 'Host'
 }

@@ -8,7 +8,7 @@ branding:
 inputs:
   Path:
     description: The path to the code to test.
-    required: true
+    required: false
     default: ${{ github.workspace }}
   Settings:
     description: The type of tests to run. Can be either 'Module', 'SourceCode' or 'Custom'.
@@ -18,11 +18,6 @@ inputs:
     description: If 'Custom' is selected, the path to the settings file.
     required: false
     default: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
-
-outputs:
-  passed:
-    description: If the tests passed.
-    value: ${{ steps.test.outputs.Passed }}
 
 runs:
   using: composite
@@ -38,7 +33,7 @@ runs:
         Script: ${{ github.action_path }}/scripts/main.ps1
 
     - name: Invoke-Pester
-      uses: PSModule/Invoke-Pester@v2
+      uses: PSModule/Invoke-Pester@v3
       id: test
       env:
         Settings: ${{ fromJson(steps.paths.outputs.result).Settings }}
