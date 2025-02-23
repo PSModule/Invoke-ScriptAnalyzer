@@ -65,7 +65,6 @@ BeforeDiscovery {
 
 Describe 'PSScriptAnalyzer' {
     BeforeAll {
-        $PSStyle.OutputRendering = 'Host'
         $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
             $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
         } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
@@ -114,4 +113,8 @@ Describe 'PSScriptAnalyzer' {
             }
         }
     }
+}
+
+AfterAll {
+    $PSStyle.OutputRendering = 'Host'
 }

@@ -49,3 +49,118 @@ jobs:
       TestType: outputs
       Path: tests/outputTestRepo/outputs/modules/PSModuleTest
       Settings: Module
+
+
+  CatchJob:
+    name: "Catch Job - Aggregate Status"
+    needs:
+      - ActionTestSrcSourceCode
+      - ActionTestSrcCustom
+      - ActionTestSrcWithManifest
+      - ActionTestOutputs
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Aggregated Results as a Table
+        uses: PSModule/Github-Script@v1
+        with:
+          Script: |
+            Install-PSResource -Name Markdown -Repository PSGallery -TrustRepository
+
+            # Build an array of objects for each job
+            $ActionTestSrcSourceCodeOutcome = ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
+            $ActionTestSrcSourceCodeExpectedOutcome = "success"
+            $ActionTestSrcSourceCodeOutcomeResult = $ActionTestSrcSourceCodeOutcome -eq $ActionTestSrcSourceCodeExpectedOutcome
+            $ActionTestSrcSourceCodeConclusion = ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
+            $ActionTestSrcSourceCodeExpectedConclusion = "success"
+            $ActionTestSrcSourceCodeConclusionResult = $ActionTestSrcSourceCodeConclusion -eq $ActionTestSrcSourceCodeExpectedConclusion
+
+            $ActionTestSrcCustomOutcome = ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
+            $ActionTestSrcCustomExpectedOutcome = "success"
+            $ActionTestSrcCustomOutcomeResult = $ActionTestSrcCustomOutcome -eq $ActionTestSrcCustomExpectedOutcome
+            $ActionTestSrcCustomConclusion = ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
+            $ActionTestSrcCustomExpectedConclusion = "success"
+            $ActionTestSrcCustomConclusionResult = $ActionTestSrcCustomConclusion -eq $ActionTestSrcCustomExpectedConclusion
+
+            $ActionTestSrcWithManifestOutcome = ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
+            $ActionTestSrcWithManifestExpectedOutcome = "failure"
+            $ActionTestSrcWithManifestOutcomeResult = $ActionTestSrcWithManifestOutcome -eq $ActionTestSrcWithManifestExpectedOutcome
+            $ActionTestSrcWithManifestConclusion = ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+            $ActionTestSrcWithManifestExpectedConclusion = "success"
+            $ActionTestSrcWithManifestConclusionResult = $ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
+
+            $ActionTestOutputsOutcome = ${{ needs.ActionTestOutputs.outputs.Outcome }}
+            $ActionTestOutputsExpectedOutcome = "success"
+            $ActionTestOutputsOutcomeResult = $ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
+            $ActionTestOutputsConclusion = ${{ needs.ActionTestOutputs.outputs.Conclusion }}
+            $ActionTestOutputsExpectedConclusion = "success"
+            $ActionTestOutputsConclusionResult = $ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
+
+            $jobs = @(
+              [PSCustomObject]@{
+                Name               = "Action-Test - [Src-SourceCode]"
+                Outcome            = $ActionTestSrcSourceCodeOutcome
+                ExpectedOutcome    = $ActionTestSrcSourceCodeExpectedOutcome
+                PassedOutcome      = $ActionTestSrcSourceCodeOutcomeResult
+                Conclusion         = $ActionTestSrcSourceCodeConclusion
+                ExpectedConclusion = $ActionTestSrcSourceCodeExpectedConclusion
+                PassedConclusion   = $ActionTestSrcSourceCodeConclusionResult
+              },
+              [PSCustomObject]@{
+                Name               = "Action-Test - [Src-Custom]"
+                Outcome            = $ActionTestSrcCustomOutcome
+                ExpectedOutcome    = $ActionTestSrcCustomExpectedOutcome
+                PassedOutcome      = $ActionTestSrcCustomOutcomeResult
+                Conclusion         = $ActionTestSrcCustomConclusion
+                ExpectedConclusion = $ActionTestSrcCustomExpectedConclusion
+                PassedConclusion   = $ActionTestSrcCustomConclusionResult
+              },
+              [PSCustomObject]@{
+                Name               = "Action-Test - [Src-WithManifest]"
+                Outcome            = $ActionTestSrcWithManifestOutcome
+                ExpectedOutcome    = $ActionTestSrcWithManifestExpectedOutcome
+                PassedOutcome      = $ActionTestSrcWithManifestOutcomeResult
+                Conclusion         = $ActionTestSrcWithManifestConclusion
+                ExpectedConclusion = $ActionTestSrcWithManifestExpectedConclusion
+                PassedConclusion   = $ActionTestSrcWithManifestConclusionResult
+              },
+              [PSCustomObject]@{
+                Name               = "Action-Test - [outputs]"
+                Outcome            = $ActionTestOutputsOutcome
+                ExpectedOutcome    = $ActionTestOutputsExpectedOutcome
+                PassedOutcome      = $ActionTestOutputsOutcomeResult
+                Conclusion         = $ActionTestOutputsConclusion
+                ExpectedConclusion = $ActionTestOutputsExpectedConclusion
+                PassedConclusion   = $ActionTestOutputsConclusionResult
+              }
+            )
+
+            # Display the table in the workflow logs
+            $jobs | Format-List
+
+            $passed = $true
+            $jobs | ForEach-Object {
+              if (-not $_.PassedOutcome) {
+                Write-Error "Job $($_.Name) failed with Outcome $($_.Outcome) and Expected Outcome $($_.ExpectedOutcome)"
+                $passed = $false
+              }
+
+              if (-not $_.PassedConclusion) {
+                Write-Error "Job $($_.Name) failed with Conclusion $($_.Conclusion) and Expected Conclusion $($_.ExpectedConclusion)"
+                $passed = $false
+              }
+            }
+
+            $icon = if ($passed) { '✅' } else { '❌' }
+            $status = Heading 1 "$icon - GitHub Actions Status" {
+                Table {
+                    $jobs
+                }
+            }
+
+            Set-GitHubStepSummary -Summary $status
+
+            if (-not $passed) {
+              Write-GithubError "One or more jobs failed"
+              exit 1
+            }
