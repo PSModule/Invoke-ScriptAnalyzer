@@ -30,4 +30,4 @@ jobs:
           VALIDATE_JSON_PRETTIER: false
           VALIDATE_MARKDOWN_PRETTIER: false
           VALIDATE_YAML_PRETTIER: false
-          FILTER_REGEX_EXCLUDE: 'tests/srcWithManifestTestRepo/src/functions/public/SomethingElse/Set-PSModuleTest\.ps1$'
+          FILTER_REGEX_EXCLUDE: '.*Set-PSModuleTest\.ps1$'
