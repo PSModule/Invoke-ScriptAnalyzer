@@ -9,7 +9,6 @@ inputs:
   Path:
     description: The path to the code to test.
     required: false
-    default: '.'
   Settings:
     description: The type of tests to run. Can be either 'Module', 'SourceCode' or 'Custom'.
     required: false
@@ -57,7 +56,8 @@ runs:
         Script: ${{ github.action_path }}/scripts/main.ps1
 
     - name: Invoke-Pester
-      uses: PSModule/Invoke-Pester@v3
+      # uses: PSModule/Invoke-Pester@v3
+      uses: PSModule/Invoke-Pester@fixCOntainerEval
       id: test
       env:
         Settings: ${{ fromJson(steps.paths.outputs.result).Settings }}
