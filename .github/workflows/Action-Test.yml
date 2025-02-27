@@ -32,7 +32,7 @@ jobs:
         id: action-test
         with:
           WorkingDirectory: tests/srcTestRepo
-          Path: /src
+          Path: src
           Settings: SourceCode
 
       - name: Status
