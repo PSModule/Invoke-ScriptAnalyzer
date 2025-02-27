@@ -15,15 +15,16 @@ customize rule selection, severity filtering, and custom rule inclusion.
 
 ## Inputs
 
-| Input               | Description                                                    | Required | Default                                                                     |
-|---------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
-| `Path`              | The path to the code to test.                                  | false    | `${{ github.workspace }}`                                                   |
-| `Settings`          | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | false    | `Custom`                                                                    |
-| `SettingsFilePath`  | If `Custom` is selected, the path to the settings file.        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
-| `Debug`             | Enable debug output.                                           | false    | `'false'`                                                                   |
-| `Verbose`           | Enable verbose output.                                         | false    | `'false'`                                                                   |
-| `Version`           | Specifies the exact version of the GitHub module to install.   | false    |                                                                             |
-| `Prerelease`        | Allow prerelease versions if available.                        | false    | `'false'`                                                                   |
+| Input              | Description                                                    | Required | Default                                                                     |
+|--------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
+| `Path`             | The path to the code to test.                                  | false    | `'.'`                                                                       |
+| `Settings`         | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | false    | `Custom`                                                                    |
+| `SettingsFilePath` | If `Custom` is selected, the path to the settings file.        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
+| `Debug`            | Enable debug output.                                           | false    | `'false'`                                                                   |
+| `Verbose`          | Enable verbose output.                                         | false    | `'false'`                                                                   |
+| `Version`          | Specifies the exact version of the GitHub module to install.   | false    |                                                                             |
+| `Prerelease`       | Allow prerelease versions if available.                        | false    | `'false'`                                                                   |
+| `WorkingDirectory` | The working directory where the script runs.                   | false    | `${{ github.workspace }}`                                                   |
 
 ## Outputs
 
