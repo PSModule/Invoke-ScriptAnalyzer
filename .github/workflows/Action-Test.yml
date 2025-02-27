@@ -31,7 +31,8 @@ jobs:
         uses: ./
         id: action-test
         with:
-          Path: tests/srcTestRepo/src
+          WorkingDirectory: tests/srcTestRepo
+          Path: /src
           Settings: SourceCode
 
       - name: Status
@@ -54,9 +55,10 @@ jobs:
         uses: ./
         id: action-test
         with:
-          Path: tests/srcTestRepo/src
+          WorkingDirectory: tests/srcTestRepo
+          Path: src
           Settings: Custom
-          SettingsFilePath: tests/srcTestRepo/tests/Custom.Settings.psd1
+          SettingsFilePath: tests/Custom.Settings.psd1
 
       - name: Status
         shell: pwsh
@@ -79,7 +81,8 @@ jobs:
         continue-on-error: true
         id: action-test
         with:
-          Path: tests/srcWithManifestTestRepo/src
+          WorkingDirectory: tests/srcWithManifestTestRepo
+          Path: src
           Settings: SourceCode
 
       - name: Status
@@ -102,7 +105,8 @@ jobs:
         uses: ./
         id: action-test
         with:
-          Path: tests/outputTestRepo/outputs/modules/PSModuleTest
+          WorkingDirectory: tests/outputTestRepo
+          Path: outputs/modules/PSModuleTest
           Settings: Module
 
       - name: Status
