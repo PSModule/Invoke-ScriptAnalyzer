@@ -9,11 +9,11 @@ inputs:
   Path:
     description: The path to the code to test.
     required: false
-    default: ${{ github.workspace }}
+    default: '.'
   Settings:
     description: The type of tests to run. Can be either 'Module', 'SourceCode' or 'Custom'.
     required: false
-    default: 'Custom'
+    default: Custom
   SettingsFilePath:
     description: If 'Custom' is selected, the path to the settings file.
     required: false
@@ -41,7 +41,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get test paths
+    - name: Get-TestPaths
       uses: PSModule/Github-Script@v1
       id: paths
       env:

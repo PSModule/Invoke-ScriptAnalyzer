@@ -17,7 +17,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 
 | Input              | Description                                                    | Required | Default                                                                     |
 |--------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
-| `Path`             | The path to the code to test.                                  | false    | `${{ github.workspace }}`                                                   |
+| `Path`             | The path to the code to test.                                  | false    | `'.'`                                                                       |
 | `Settings`         | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | false    | `Custom`                                                                    |
 | `SettingsFilePath` | If `Custom` is selected, the path to the settings file.        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
 | `Debug`            | Enable debug output.                                           | false    | `'false'`                                                                   |
