@@ -20,7 +20,7 @@ $settingsFilePath = switch -Regex ($settings) {
     CodePath         = $codePath
     TestPath         = $testPath
     SettingsFilePath = $settingsFilePath
-} | Format-List
+} | Format-List | Out-String
 
 Set-GitHubOutput -Name Settings -Value $settings
 Set-GitHubOutput -Name CodePath -Value $codePath
