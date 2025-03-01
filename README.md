@@ -85,7 +85,7 @@ jobs:
       - name: Invoke PSScriptAnalyzer
         uses: PSModule/Invoke-ScriptAnalyzer@v2
         with:
-          Path: ${{ github.workspace }}
+          Path: src
           Settings: SourceCode
 ```
 

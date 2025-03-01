@@ -9,6 +9,7 @@ inputs:
   Path:
     description: The path to the code to test.
     required: false
+    default: '.'
   Settings:
     description: The type of tests to run. Can be either 'Module', 'SourceCode' or 'Custom'.
     required: false
