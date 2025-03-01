@@ -2,7 +2,7 @@
 $settings = $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Settings
 $testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
 $path = [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path) ? '.' : $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path
-$codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path | Select-Object -ExpandProperty Path
+$codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
 $settingsFilePath = switch -Regex ($settings) {
     'Module|SourceCode' {
         "$testPath/$settings.Settings.psd1"
