@@ -31,9 +31,9 @@ jobs:
         uses: ./
         id: action-test
         with:
-          WorkingDirectory: tests/srcTestRepo
           Path: src
           Settings: SourceCode
+          WorkingDirectory: tests/srcTestRepo
 
       - name: Status
         shell: pwsh
@@ -55,10 +55,10 @@ jobs:
         uses: ./
         id: action-test
         with:
-          WorkingDirectory: tests/srcTestRepo
           Path: src
           Settings: Custom
           SettingsFilePath: tests/Custom.Settings.psd1
+          WorkingDirectory: tests/srcTestRepo
 
       - name: Status
         shell: pwsh
@@ -81,9 +81,9 @@ jobs:
         continue-on-error: true
         id: action-test
         with:
-          WorkingDirectory: tests/srcWithManifestTestRepo
           Path: src
           Settings: SourceCode
+          WorkingDirectory: tests/srcWithManifestTestRepo
 
       - name: Status
         shell: pwsh
@@ -105,9 +105,9 @@ jobs:
         uses: ./
         id: action-test
         with:
-          WorkingDirectory: tests/outputTestRepo
           Path: outputs/modules/PSModuleTest
           Settings: Module
+          WorkingDirectory: tests/outputTestRepo
 
       - name: Status
         shell: pwsh
@@ -229,4 +229,3 @@ jobs:
                 Write-GitHubError 'One or more jobs failed'
                 exit 1
             }
-
