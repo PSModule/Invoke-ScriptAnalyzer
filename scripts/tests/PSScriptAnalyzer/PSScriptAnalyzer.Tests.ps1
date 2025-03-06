@@ -74,9 +74,9 @@ Describe 'PSScriptAnalyzer' {
         }
         $Path = Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
         $relativePath = if ($Path.StartsWith($PSScriptRoot)) {
-            $Path.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+            $Path.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/').Replace('\', '/')
         } elseif ($Path.StartsWith($env:GITHUB_WORKSPACE)) {
-            $Path.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+            $Path.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/').Replace('\', '/')
         } else {
             $Path
         }
