@@ -106,7 +106,13 @@ Describe 'PSScriptAnalyzer' {
                 It "$($rule.CommonName) ($($rule.RuleName))" -Skip:$rule.Skip -ForEach @{ Rule = $rule } {
                     $issues = [Collections.Generic.List[string]]::new()
                     $testResults | Where-Object { $_.RuleName -eq $Rule.RuleName } | ForEach-Object {
-                        $relativeScriptPath = $_.ScriptPath.Replace($relativePath, '').Trim('\').Trim('/')
+                        $relativeScriptPath = if ($_.ScriptPath.StartsWith($PSScriptRoot)) {
+                            $_.ScriptPath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+                        } elseif ($_.ScriptPath.StartsWith($env:GITHUB_WORKSPACE)) {
+                            $_.ScriptPath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+                        } else {
+                            $_.ScriptPath
+                        }
                         $issues.Add(([Environment]::NewLine + " - $relativeScriptPath`:L$($_.Line):C$($_.Column)"))
                     }
                     $issues -join '' | Should -BeNullOrEmpty -Because $rule.Description
