@@ -35,7 +35,218 @@ inputs:
   WorkingDirectory:
     description: The working directory where the script will run from.
     required: false
-    default: ${{ github.workspace }}
+    default: '.'
+  ReportAsJson:
+    description: |
+      Output generated reports in JSON format in addition to the configured format through Pester.
+    required: false
+    default: 'true'
+  StepSummary_Enabled:
+    description: |
+      Controls if a GitHub step summary should be shown.
+    required: false
+    default: 'true'
+  StepSummary_ShowTestOverview:
+    description: |
+      Controls whether to show the test overview table in the GitHub step summary.
+    required: false
+    default: 'true'
+  StepSummary_ShowTests:
+    description: |
+      Controls which tests to show in the GitHub step summary. Allows "Full", "Failed", or "None".
+    required: false
+    default: 'Failed'
+  StepSummary_ShowConfiguration:
+    description: |
+      Controls whether to show the configuration details in the GitHub step summary.
+    required: false
+    default: 'false'
+  Run_ExcludePath:
+    description: |
+      Directories or files to be excluded from the run.
+    required: false
+  Run_Exit:
+    description: |
+      Exit with non-zero exit code when the test run fails. Exit code is always set to `$LASTEXITCODE` even when this option is `$false`.
+      When used together with Throw, throwing an exception is preferred.
+    required: false
+  Run_Throw:
+    description: |
+      Throw an exception when test run fails. When used together with Exit, throwing an exception is preferred.
+    required: false
+  Run_SkipRun:
+    description: |
+      Runs the discovery phase but skips run. Use it with PassThru to get object populated with all tests.
+    required: false
+  Run_SkipRemainingOnFailure:
+    description: |
+      Skips remaining tests after failure for selected scope, options are None, Run, Container and Block.
+    required: false
+  CodeCoverage_Enabled:
+    description: |
+      Enable CodeCoverage.
+    required: false
+  CodeCoverage_OutputFormat:
+    description: |
+      Format to use for code coverage report. Possible values: JaCoCo, CoverageGutters, Cobertura
+    required: false
+  CodeCoverage_OutputPath:
+    description: |
+      Path relative to the current directory where code coverage report is saved.
+    required: false
+  CodeCoverage_OutputEncoding:
+    description: |
+      Encoding of the output file.
+    required: false
+  CodeCoverage_Path:
+    description: |
+      Directories or files to be used for code coverage, by default the Path(s) from general settings are used, unless overridden here.
+    required: false
+  CodeCoverage_ExcludeTests:
+    description: |
+      Exclude tests from code coverage. This uses the TestFilter from general configuration.
+    required: false
+  CodeCoverage_RecursePaths:
+    description: |
+      Will recurse through directories in the Path option.
+    required: false
+  CodeCoverage_CoveragePercentTarget:
+    description: |
+      Target percent of code coverage that you want to achieve.
+    required: false
+  CodeCoverage_UseBreakpoints:
+    description: |
+      EXPERIMENTAL: When false, use Profiler based tracer to do CodeCoverage instead of using breakpoints.
+    required: false
+  CodeCoverage_SingleHitBreakpoints:
+    description: |
+      Remove breakpoint when it is hit.
+    required: false
+  TestResult_Enabled:
+    description: |
+      Enable TestResult.
+    required: false
+  TestResult_OutputFormat:
+    description: |
+      Format to use for test result report. Possible values: NUnitXml, NUnit2.5, NUnit3 or JUnitXml
+    required: false
+  TestResult_OutputPath:
+    description: |
+      Path relative to the current directory where test result report is saved.
+    required: false
+  TestResult_OutputEncoding:
+    description: |
+      Encoding of the output file.
+    required: false
+  TestResult_TestSuiteName:
+    description: |
+      Set the name assigned to the root 'test-suite' element.
+    required: false
+    default: PSScriptAnalyzer
+  Should_ErrorAction:
+    description: |
+      Controls if Should throws on error. Use 'Stop' to throw on error, or 'Continue' to fail at the end of the test.
+    required: false
+  Debug_ShowFullErrors:
+    description: |
+      Show full errors including Pester internal stack. This property is deprecated, and if set to true it will override Output.StackTraceVerbosity to 'Full'.
+    required: false
+  Debug_WriteDebugMessages:
+    description: |
+      Write Debug messages to screen.
+    required: false
+  Debug_WriteDebugMessagesFrom:
+    description: |
+      Write Debug messages from a given source, WriteDebugMessages must be set to true for this to work.
+      You can use like wildcards to get messages from multiple sources, as well as * to get everything.
+    required: false
+  Debug_ShowNavigationMarkers:
+    description: |
+      Write paths after every block and test, for easy navigation in VSCode.
+    required: false
+  Debug_ReturnRawResultObject:
+    description: |
+      Returns unfiltered result object, this is for development only. Do not rely on this object for additional properties,
+      non-public properties will be renamed without previous notice.
+    required: false
+  Output_Verbosity:
+    description: |
+      The verbosity of output, options are None, Normal, Detailed and Diagnostic.
+    required: false
+  Output_StackTraceVerbosity:
+    description: |
+      The verbosity of stacktrace output, options are None, FirstLine, Filtered and Full.
+    required: false
+  Output_CIFormat:
+    description: |
+      The CI format of error output in build logs, options are None, Auto, AzureDevops and GithubActions.
+    required: false
+  Output_CILogLevel:
+    description: |
+      The CI log level in build logs, options are Error and Warning.
+    required: false
+  Output_RenderMode:
+    description: |
+      The mode used to render console output, options are Auto, Ansi, ConsoleColor and Plaintext.
+    required: false
+  TestDrive_Enabled:
+    description: |
+      Enable TestDrive.
+    required: false
+  TestRegistry_Enabled:
+    description: |
+      Enable TestRegistry.
+    required: false
+
+outputs:
+  Outcome:
+    description: |
+      The outcome of the test run.
+    value: ${{ steps.test.outcome }}
+  Conclusion:
+    description: |
+      The conclusion of the test run.
+    value: ${{ steps.test.conclusion }}
+  Executed:
+    description: |
+      Whether tests were executed.
+    value: ${{ steps.test.outputs.Executed }}
+  Result:
+    description: |
+      Overall result of the Pester test run (e.g., Passed, Failed).
+    value: ${{ steps.test.outputs.Result }}
+  FailedCount:
+    description: |
+      Number of failed tests.
+    value: ${{ steps.test.outputs.FailedCount }}
+  FailedBlocksCount:
+    description: |
+      Number of failed blocks.
+    value: ${{ steps.test.outputs.FailedBlocksCount }}
+  FailedContainersCount:
+    description: |
+      Number of failed containers.
+    value: ${{ steps.test.outputs.FailedContainersCount }}
+  PassedCount:
+    description: |
+      Number of passed tests.
+    value: ${{ steps.test.outputs.PassedCount }}
+  SkippedCount:
+    description: |
+      Number of skipped tests.
+    value: ${{ steps.test.outputs.SkippedCount }}
+  InconclusiveCount:
+    description: |
+      Number of inconclusive tests.
+    value: ${{ steps.test.outputs.InconclusiveCount }}
+  NotRunCount:
+    description: |
+      Number of tests not run.
+    value: ${{ steps.test.outputs.NotRunCount }}
+  TotalCount:
+    description: |
+      Total count of tests.
+    value: ${{ steps.test.outputs.TotalCount }}
 
 runs:
   using: composite
@@ -67,6 +278,43 @@ runs:
         Verbose: ${{ inputs.Verbose }}
         Version: ${{ inputs.Version }}
         WorkingDirectory: ${{ inputs.WorkingDirectory }}
-        TestResult_TestSuiteName: PSScriptAnalyzer
+        TestResult_TestSuiteName: ${{ inputs.TestResult_TestSuiteName }}
         Path: ${{ github.action_path }}/scripts/tests/PSScriptAnalyzer
         Run_Path: ${{ fromJson(steps.paths.outputs.result).CodePath }}
+        ReportAsJson: ${{ inputs.ReportAsJson }}
+        StepSummary_Enabled: ${{ inputs.StepSummary_Enabled }}
+        StepSummary_ShowTestOverview: ${{ inputs.StepSummary_ShowTestOverview }}
+        StepSummary_ShowTests: ${{ inputs.StepSummary_ShowTests }}
+        StepSummary_ShowConfiguration: ${{ inputs.StepSummary_ShowConfiguration }}
+        Run_ExcludePath: ${{ inputs.Run_ExcludePath }}
+        Run_Exit: ${{ inputs.Run_Exit }}
+        Run_Throw: ${{ inputs.Run_Throw }}
+        Run_SkipRun: ${{ inputs.Run_SkipRun }}
+        Run_SkipRemainingOnFailure: ${{ inputs.Run_SkipRemainingOnFailure }}
+        CodeCoverage_Enabled: ${{ inputs.CodeCoverage_Enabled }}
+        CodeCoverage_OutputFormat: ${{ inputs.CodeCoverage_OutputFormat }}
+        CodeCoverage_OutputPath: ${{ inputs.CodeCoverage_OutputPath }}
+        CodeCoverage_OutputEncoding: ${{ inputs.CodeCoverage_OutputEncoding }}
+        CodeCoverage_Path: ${{ inputs.CodeCoverage_Path }}
+        CodeCoverage_ExcludeTests: ${{ inputs.CodeCoverage_ExcludeTests }}
+        CodeCoverage_RecursePaths: ${{ inputs.CodeCoverage_RecursePaths }}
+        CodeCoverage_CoveragePercentTarget: ${{ inputs.CodeCoverage_CoveragePercentTarget }}
+        CodeCoverage_UseBreakpoints: ${{ inputs.CodeCoverage_UseBreakpoints }}
+        CodeCoverage_SingleHitBreakpoints: ${{ inputs.CodeCoverage_SingleHitBreakpoints }}
+        TestResult_Enabled: ${{ inputs.TestResult_Enabled }}
+        TestResult_OutputFormat: ${{ inputs.TestResult_OutputFormat }}
+        TestResult_OutputPath: ${{ inputs.TestResult_OutputPath }}
+        TestResult_OutputEncoding: ${{ inputs.TestResult_OutputEncoding }}
+        Should_ErrorAction: ${{ inputs.Should_ErrorAction }}
+        Debug_ShowFullErrors: ${{ inputs.Debug_ShowFullErrors }}
+        Debug_WriteDebugMessages: ${{ inputs.Debug_WriteDebugMessages }}
+        Debug_WriteDebugMessagesFrom: ${{ inputs.Debug_WriteDebugMessagesFrom }}
+        Debug_ShowNavigationMarkers: ${{ inputs.Debug_ShowNavigationMarkers }}
+        Debug_ReturnRawResultObject: ${{ inputs.Debug_ReturnRawResultObject }}
+        Output_Verbosity: ${{ inputs.Output_Verbosity }}
+        Output_StackTraceVerbosity: ${{ inputs.Output_StackTraceVerbosity }}
+        Output_CIFormat: ${{ inputs.Output_CIFormat }}
+        Output_CILogLevel: ${{ inputs.Output_CILogLevel }}
+        Output_RenderMode: ${{ inputs.Output_RenderMode }}
+        TestDrive_Enabled: ${{ inputs.TestDrive_Enabled }}
+        TestRegistry_Enabled: ${{ inputs.TestRegistry_Enabled }}
