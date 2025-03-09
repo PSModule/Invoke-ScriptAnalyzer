@@ -45,7 +45,7 @@ inputs:
     description: |
       Controls if a GitHub step summary should be shown.
     required: false
-    default: 'false'
+    default: 'true'
   StepSummary_ShowTestOverview:
     description: |
       Controls whether to show the test overview table in the GitHub step summary.

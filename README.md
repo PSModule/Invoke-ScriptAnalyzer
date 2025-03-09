@@ -26,7 +26,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `Prerelease`                         | Allow prerelease versions if available.                                        | false    | `'false'`                                                                   |
 | `WorkingDirectory`                   | The working directory where the script runs.                                   | false    | `'.'`                                                                       |
 | `ReportAsJson`                       | Output generated reports in JSON format in addition to the configured format.  | false    | `'true'`                                                                    |
-| `StepSummary_Enabled`                | Controls if a GitHub step summary should be shown.                             | false    | `'false'`                                                                   |
+| `StepSummary_Enabled`                | Controls if a GitHub step summary should be shown.                             | false    | `'true'`                                                                    |
 | `StepSummary_ShowTestOverview`       | Controls whether to show the test overview table in the GitHub step summary.   | false    | `'true'`                                                                    |
 | `StepSummary_ShowTests`              | Controls which tests to show in the GitHub step summary (Full/Failed/None).    | false    | `'Failed'`                                                                  |
 | `StepSummary_ShowConfiguration`      | Controls whether to show the configuration details in the GitHub step summary. | false    | `'false'`                                                                   |
