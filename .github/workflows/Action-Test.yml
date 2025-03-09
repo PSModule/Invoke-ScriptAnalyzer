@@ -134,9 +134,12 @@ jobs:
       ActionTestOutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
       ActionTestOutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Aggregated Status
         uses: PSModule/Github-Script@v1
         with:
           Script: |
             # Aggregated Status
-            ${{ github.action_path }}/tests/Get-AggregatedStatus.ps1
+            tests/Get-AggregatedStatus.ps1
