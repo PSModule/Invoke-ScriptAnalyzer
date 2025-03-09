@@ -15,20 +15,73 @@ customize rule selection, severity filtering, and custom rule inclusion.
 
 ## Inputs
 
-| Input              | Description                                                    | Required | Default                                                                     |
-|--------------------|----------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
-| `Path`             | The path to the code to test.                                  | false    | `'.'`                                                                       |
-| `Settings`         | The type of tests to run: `Module`, `SourceCode`, or `Custom`. | false    | `Custom`                                                                    |
-| `SettingsFilePath` | If `Custom` is selected, the path to the settings file.        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
-| `Debug`            | Enable debug output.                                           | false    | `'false'`                                                                   |
-| `Verbose`          | Enable verbose output.                                         | false    | `'false'`                                                                   |
-| `Version`          | Specifies the exact version of the GitHub module to install.   | false    |                                                                             |
-| `Prerelease`       | Allow prerelease versions if available.                        | false    | `'false'`                                                                   |
-| `WorkingDirectory` | The working directory where the script runs.                   | false    | `${{ github.workspace }}`                                                   |
+| Input                                | Description                                                                    | Required | Default                                                                     |
+|--------------------------------------|--------------------------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
+| `Path`                               | The path to the code to test.                                                  | false    | `'.'`                                                                       |
+| `Settings`                           | The type of tests to run: `Module`, `SourceCode`, or `Custom`.                 | false    | `Custom`                                                                    |
+| `SettingsFilePath`                   | If `Custom` is selected, the path to the settings file.                        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
+| `Debug`                              | Enable debug output.                                                           | false    | `'false'`                                                                   |
+| `Verbose`                            | Enable verbose output.                                                         | false    | `'false'`                                                                   |
+| `Version`                            | Specifies the exact version of the GitHub module to install.                   | false    |                                                                             |
+| `Prerelease`                         | Allow prerelease versions if available.                                        | false    | `'false'`                                                                   |
+| `WorkingDirectory`                   | The working directory where the script runs.                                   | false    | `'.'`                                                                       |
+| `ReportAsJson`                       | Output generated reports in JSON format in addition to the configured format.  | false    | `'true'`                                                                    |
+| `StepSummary_Enabled`                | Controls if a GitHub step summary should be shown.                             | false    | `'false'`                                                                   |
+| `StepSummary_ShowTestOverview`       | Controls whether to show the test overview table in the GitHub step summary.   | false    | `'true'`                                                                    |
+| `StepSummary_ShowTests`              | Controls which tests to show in the GitHub step summary (Full/Failed/None).    | false    | `'Failed'`                                                                  |
+| `StepSummary_ShowConfiguration`      | Controls whether to show the configuration details in the GitHub step summary. | false    | `'false'`                                                                   |
+| `Run_ExcludePath`                    | Directories or files to be excluded from the run.                              | false    |                                                                             |
+| `Run_Exit`                           | Exit with non-zero exit code when the test run fails.                          | false    |                                                                             |
+| `Run_Throw`                          | Throw an exception when test run fails.                                        | false    |                                                                             |
+| `Run_SkipRun`                        | Runs the discovery phase but skips run.                                        | false    |                                                                             |
+| `Run_SkipRemainingOnFailure`         | Skips remaining tests after failure (None/Run/Container/Block).                | false    |                                                                             |
+| `CodeCoverage_Enabled`               | Enable CodeCoverage.                                                           | false    |                                                                             |
+| `CodeCoverage_OutputFormat`          | Format to use for code coverage report (JaCoCo/CoverageGutters/Cobertura).     | false    |                                                                             |
+| `CodeCoverage_OutputPath`            | Path relative to the current directory where code coverage report is saved.    | false    |                                                                             |
+| `CodeCoverage_OutputEncoding`        | Encoding of the output file.                                                   | false    |                                                                             |
+| `CodeCoverage_Path`                  | Directories or files to be used for code coverage.                             | false    |                                                                             |
+| `CodeCoverage_ExcludeTests`          | Exclude tests from code coverage.                                              | false    |                                                                             |
+| `CodeCoverage_RecursePaths`          | Will recurse through directories in the Path option.                           | false    |                                                                             |
+| `CodeCoverage_CoveragePercentTarget` | Target percent of code coverage that you want to achieve.                      | false    |                                                                             |
+| `CodeCoverage_UseBreakpoints`        | EXPERIMENTAL: Use Profiler based tracer instead of breakpoints when false.     | false    |                                                                             |
+| `CodeCoverage_SingleHitBreakpoints`  | Remove breakpoint when it is hit.                                              | false    |                                                                             |
+| `TestResult_Enabled`                 | Enable TestResult.                                                             | false    |                                                                             |
+| `TestResult_OutputFormat`            | Format to use for test result report (NUnitXml/NUnit2.5/NUnit3/JUnitXml).      | false    |                                                                             |
+| `TestResult_OutputPath`              | Path relative to the current directory where test result report is saved.      | false    |                                                                             |
+| `TestResult_OutputEncoding`          | Encoding of the output file.                                                   | false    |                                                                             |
+| `TestResult_TestSuiteName`           | Set the name assigned to the root 'test-suite' element.                        | false    | `PSScriptAnalyzer`                                                          |
+| `Should_ErrorAction`                 | Controls if Should throws on error. Use 'Stop' or 'Continue'.                  | false    |                                                                             |
+| `Debug_ShowFullErrors`               | Show full errors including Pester internal stack.                              | false    |                                                                             |
+| `Debug_WriteDebugMessages`           | Write Debug messages to screen.                                                | false    |                                                                             |
+| `Debug_WriteDebugMessagesFrom`       | Write Debug messages from a given source.                                      | false    |                                                                             |
+| `Debug_ShowNavigationMarkers`        | Write paths after every block and test, for easy navigation.                   | false    |                                                                             |
+| `Debug_ReturnRawResultObject`        | Returns unfiltered result object, for development only.                        | false    |                                                                             |
+| `Output_Verbosity`                   | The verbosity of output (None/Normal/Detailed/Diagnostic).                     | false    |                                                                             |
+| `Output_StackTraceVerbosity`         | The verbosity of stacktrace output (None/FirstLine/Filtered/Full).             | false    |                                                                             |
+| `Output_CIFormat`                    | The CI format of error output (None/Auto/AzureDevops/GithubActions).           | false    |                                                                             |
+| `Output_CILogLevel`                  | The CI log level in build logs (Error/Warning).                                | false    |                                                                             |
+| `Output_RenderMode`                  | The mode used to render console output (Auto/Ansi/ConsoleColor/Plaintext).     | false    |                                                                             |
+| `TestDrive_Enabled`                  | Enable TestDrive.                                                              | false    |                                                                             |
+| `TestRegistry_Enabled`               | Enable TestRegistry.                                                           | false    |                                                                             |
 
 ## Outputs
 
-N/A
+The action provides the following outputs:
+
+| Output                  | Description                                      |
+|-------------------------|--------------------------------------------------|
+| `Outcome`               | The outcome of the test run (success/failure)    |
+| `Conclusion`            | The conclusion of the test run (success/failure) |
+| `Executed`              | Whether tests were executed (True/False)         |
+| `Result`                | Overall result of the test run (Passed/Failed)   |
+| `FailedCount`           | Number of failed tests                           |
+| `FailedBlocksCount`     | Number of failed blocks                          |
+| `FailedContainersCount` | Number of failed containers                      |
+| `PassedCount`           | Number of passed tests                           |
+| `SkippedCount`          | Number of skipped tests                          |
+| `InconclusiveCount`     | Number of inconclusive tests                     |
+| `NotRunCount`           | Number of tests not run                          |
+| `TotalCount`            | Total count of tests                             |
 
 ## How It Works
 
