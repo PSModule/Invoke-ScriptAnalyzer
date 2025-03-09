@@ -85,13 +85,15 @@ $jobs | Format-List
 $passed = $true
 $jobs | ForEach-Object {
     if (-not $_.PassedOutcome) {
-        Write-Error "Job $($_.Name) failed with Outcome $($_.Outcome) and Expected Outcome $($_.ExpectedOutcome)"
+        Write-Warning "Job $($_.Name) failed with Outcome $($_.Outcome) and Expected Outcome $($_.ExpectedOutcome)"
         $passed = $false
+        Write-Warning "Passed: $passed"
     }
 
     if (-not $_.PassedConclusion) {
-        Write-Error "Job $($_.Name) failed with Conclusion $($_.Conclusion) and Expected Conclusion $($_.ExpectedConclusion)"
+        Write-Warning "Job $($_.Name) failed with Conclusion $($_.Conclusion) and Expected Conclusion $($_.ExpectedConclusion)"
         $passed = $false
+        Write-Warning "Passed: $passed"
     }
 }
 
