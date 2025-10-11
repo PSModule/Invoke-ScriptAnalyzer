@@ -18,8 +18,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | Input                                | Description                                                                    | Required | Default                                                                     |
 |--------------------------------------|--------------------------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
 | `Path`                               | The path to the code to test.                                                  | false    | `'.'`                                                                       |
-| `Settings`                           | The type of tests to run: `Module`, `SourceCode`, or `Custom`.                 | false    | `Custom`                                                                    |
-| `SettingsFilePath`                   | If `Custom` is selected, the path to the settings file.                        | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
+| `SettingsFilePath`                   | The path to the settings file.                                                 | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
 | `Debug`                              | Enable debug output.                                                           | false    | `'false'`                                                                   |
 | `Verbose`                            | Enable verbose output.                                                         | false    | `'false'`                                                                   |
 | `Version`                            | Specifies the exact version of the GitHub module to install.                   | false    |                                                                             |
@@ -89,19 +88,18 @@ The action provides the following outputs:
    Choose a path for your code to test into the `Path` input. This can be a
    directory or a file.
 
-2. **Choose settings**
-   Choose the type of tests to run by setting the `Settings` input. The options
-   are `Module`, `SourceCode`, or `Custom`. The default is `Custom`.
+2. **Configure settings file**
+   Create a custom settings file to customize the analysis. The settings file is
+   a hashtable that defines the rules to include, exclude, or customize. The
+   settings file is in the format of a `.psd1` file.
 
-   The predefined settings:
-    - [`Module`](./scripts/tests/PSScriptAnalyzer/Module.Settings.psd1): Analyzes a module following PSModule standards.
-    - [`SourceCode`](./scripts/tests/PSScriptAnalyzer/SourceCode.Settings.psd1): Analyzes the source code following PSModule standards.
+   By default, the action looks for a settings file at:
+   `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1`
 
-    You can also create a custom settings file to customize the analysis. The
-    settings file is a hashtable that defines the rules to include, exclude, or
-    customize. The settings file is in the format of a `.psd1` file.
+   You can override this by setting the `SettingsFilePath` input to point to your
+   custom settings file.
 
-    For more info on how to create a settings file, see the [Settings Documentation](./Settings.md) file.
+   For more info on how to create a settings file, see the [Settings Documentation](./Settings.md) file.
 
 3. **Run the Action**
    The tests import the settings file and use `Invoke-ScriptAnalyzer` to analyze
@@ -139,7 +137,7 @@ jobs:
         uses: PSModule/Invoke-ScriptAnalyzer@v2
         with:
           Path: src
-          Settings: SourceCode
+          SettingsFilePath: .github/linters/.powershell-psscriptanalyzer.psd1
 ```
 
 ## References and Links

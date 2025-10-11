@@ -9,14 +9,10 @@ inputs:
   Path:
     description: The path to the code to test.
     required: false
-  Settings:
-    description: The type of tests to run. Can be either 'Module', 'SourceCode' or 'Custom'.
-    required: false
-    default: Custom
   SettingsFilePath:
-    description: If 'Custom' is selected, the path to the settings file.
+    description: The path to the settings file.
     required: false
-    default: ${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1
+    default: .github/linters/.powershell-psscriptanalyzer.psd1
   Debug:
     description: Enable debug output.
     required: false
@@ -251,7 +247,6 @@ runs:
       id: paths
       env:
         PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path: ${{ inputs.Path }}
-        PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Settings: ${{ inputs.Settings }}
         PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath: ${{ inputs.SettingsFilePath }}
       with:
         Debug: ${{ inputs.Debug }}
@@ -265,7 +260,6 @@ runs:
       uses: PSModule/Invoke-Pester@v4
       id: test
       env:
-        Settings: ${{ fromJson(steps.paths.outputs.result).Settings }}
         SettingsFilePath: ${{ fromJson(steps.paths.outputs.result).SettingsFilePath }}
       with:
         Debug: ${{ inputs.Debug }}
