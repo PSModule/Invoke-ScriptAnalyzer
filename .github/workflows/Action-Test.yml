@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Action-Test
         uses: ./
@@ -49,6 +51,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Action-Test
         uses: ./
@@ -73,6 +77,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Action-Test
         uses: ./
@@ -81,6 +87,32 @@ jobs:
         with:
           Path: src
           SettingsFilePath: tests/SourceCode.Settings.psd1
+          WorkingDirectory: tests/srcWithManifestTestRepo
+
+      - name: Status
+        shell: pwsh
+        run: |
+          Write-Host "Outcome: ${{ steps.action-test.outcome }}"
+          Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
+
+  ActionTestSrcWithManifestDefault:
+    name: Action-Test - [Src-WithManifest-Default]
+    runs-on: ubuntu-latest
+    outputs:
+      Outcome: ${{ steps.action-test.outcome }}
+      Conclusion: ${{ steps.action-test.conclusion }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Action-Test
+        uses: ./
+        continue-on-error: true
+        id: action-test
+        with:
+          Path: src
           WorkingDirectory: tests/srcWithManifestTestRepo
 
       - name: Status
@@ -98,6 +130,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Action-Test
         uses: ./
@@ -118,25 +152,28 @@ jobs:
       - ActionTestSrcSourceCode
       - ActionTestSrcCustom
       - ActionTestSrcWithManifest
+      - ActionTestSrcWithManifestDefault
       - ActionTestOutputs
     if: always()
     runs-on: ubuntu-latest
     env:
-      ActionTestSrcSourceCodeOutcome: ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
-      ActionTestSrcSourceCodeConclusion: ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
-      ActionTestSrcCustomOutcome: ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
-      ActionTestSrcCustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
-      ActionTestSrcWithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
-      ActionTestSrcWithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
-      ActionTestOutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
-      ActionTestOutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
+      SourceCodeOutcome: ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
+      SourceCodeConclusion: ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
+      CustomOutcome: ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
+      CustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
+      WithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
+      WithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+      WithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
+      WithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
+      OutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
+      OutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Aggregated Status
         uses: PSModule/Github-Script@v1
         with:
-          Script: |
-            # Aggregated Status
-            tests/Get-AggregatedStatus.ps1
+          Script: tests/Get-AggregatedStatus.ps1

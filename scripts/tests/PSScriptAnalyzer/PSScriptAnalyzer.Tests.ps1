@@ -11,17 +11,25 @@
     Justification = 'Write-Host is used for log output.'
 )]
 [CmdLetBinding()]
-Param(
+param(
     [Parameter(Mandatory)]
     [string] $Path,
 
-    [Parameter(Mandatory)]
+    [Parameter()]
     [string] $SettingsFilePath
 )
 
 BeforeDiscovery {
-    LogGroup "PSScriptAnalyzer tests using settings file [$SettingsFilePath]" {
-        $settings = Import-PowerShellDataFile -Path $SettingsFilePath
+    $hasSettingsFile = -not [string]::IsNullOrEmpty($SettingsFilePath)
+    $settingsDescription = $hasSettingsFile ? "settings file [$SettingsFilePath]" : 'default settings'
+
+    LogGroup "PSScriptAnalyzer tests using $settingsDescription" {
+        if ($hasSettingsFile) {
+            $settings = Import-PowerShellDataFile -Path $SettingsFilePath
+        } else {
+            $settings = @{}
+        }
+
         $rules = [Collections.Generic.List[System.Collections.Specialized.OrderedDictionary]]::new()
         $ruleObjects = Get-ScriptAnalyzerRule -Verbose:$false | Sort-Object -Property Severity, CommonName
         $Severeties = $ruleObjects | Select-Object -ExpandProperty Severity -Unique
@@ -65,13 +73,18 @@ BeforeDiscovery {
 
 Describe 'PSScriptAnalyzer' {
     BeforeAll {
-        $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
-            $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
-        } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
-            $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
-        } else {
-            $SettingsFilePath
+        $hasSettingsFile = -not [string]::IsNullOrEmpty($SettingsFilePath)
+
+        if ($hasSettingsFile) {
+            $relativeSettingsFilePath = if ($SettingsFilePath.StartsWith($PSScriptRoot)) {
+                $SettingsFilePath.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/')
+            } elseif ($SettingsFilePath.StartsWith($env:GITHUB_WORKSPACE)) {
+                $SettingsFilePath.Replace($env:GITHUB_WORKSPACE, 'Workspace:').Trim('\').Trim('/')
+            } else {
+                $SettingsFilePath
+            }
         }
+
         $Path = Resolve-Path -Path $Path | Select-Object -ExpandProperty Path
         $relativePath = if ($Path.StartsWith($PSScriptRoot)) {
             $Path.Replace($PSScriptRoot, 'Action:').Trim('\').Trim('/').Replace('\', '/')
@@ -88,9 +101,25 @@ Describe 'PSScriptAnalyzer' {
             GITHUB_WORKSPACE         = $env:GITHUB_WORKSPACE
         }
 
-        LogGroup "Invoke-ScriptAnalyzer -Path [$relativePath] -Settings [$relativeSettingsFilePath]" {
-            $testResults = Invoke-ScriptAnalyzer -Path $Path -Settings $SettingsFilePath -Recurse -Verbose
+        $invokeParams = @{
+            Path    = $Path
+            Recurse = $true
         }
+
+        if ($hasSettingsFile) {
+            $invokeParams['Settings'] = $SettingsFilePath
+        }
+
+        $logMessage = if ($hasSettingsFile) {
+            "Invoke-ScriptAnalyzer -Path '$relativePath' -Recurse -Settings '$relativeSettingsFilePath'"
+        } else {
+            "Invoke-ScriptAnalyzer -Path '$relativePath' -Recurse (using default settings)"
+        }
+
+        LogGroup $logMessage {
+            $testResults = Invoke-ScriptAnalyzer @invokeParams
+        }
+
         LogGroup "TestResults [$($testResults.Count)]" {
             $testResults | Select-Object -Property * | Format-List | Out-String -Stream | ForEach-Object {
                 Write-Verbose $_ -Verbose

@@ -88,16 +88,41 @@ The action provides the following outputs:
    Choose a path for your code to test into the `Path` input. This can be a
    directory or a file.
 
-2. **Configure settings file**
+2. **Configure settings file (Optional)**
    Create a custom settings file to customize the analysis. The settings file is
    a hashtable that defines the rules to include, exclude, or customize. The
    settings file is in the format of a `.psd1` file.
 
-   By default, the action looks for a settings file at:
-   `.github/linters/.powershell-psscriptanalyzer.psd1`
+   **Settings File Precedence:**
 
-   You can override this by setting the `SettingsFilePath` input to point to your
-   custom settings file.
+   The action determines which settings to use in the following order:
+
+   1. **Custom Path**: If you provide a `SettingsFilePath` input, the action uses that file.
+   2. **Default Action Path**: If no `SettingsFilePath` is provided, the action looks for a settings file at:
+      `.github/linters/.powershell-psscriptanalyzer.psd1`
+   3. **PSScriptAnalyzer Defaults**: If no settings file is found in either location, the action uses
+      the default settings from the `Invoke-ScriptAnalyzer` cmdlet (all built-in rules with default severity).
+
+   **Example configurations:**
+
+   ```yaml
+   # Use a custom settings file
+   - uses: PSModule/Invoke-ScriptAnalyzer@v2
+     with:
+       Path: src
+       SettingsFilePath: config/custom-rules.psd1
+
+   # Use the default action path (.github/linters/.powershell-psscriptanalyzer.psd1)
+   - uses: PSModule/Invoke-ScriptAnalyzer@v2
+     with:
+       Path: src
+
+   # Use PSScriptAnalyzer defaults (no settings file)
+   - uses: PSModule/Invoke-ScriptAnalyzer@v2
+     with:
+       Path: src
+       SettingsFilePath: ''  # Explicitly skip settings file
+   ```
 
    For more info on how to create a settings file, see the [Settings Documentation](./Settings.md) file.
 

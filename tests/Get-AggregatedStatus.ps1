@@ -20,62 +20,76 @@
 }
 
 # Build an array of objects for each job
-$ActionTestSrcSourceCodeExpectedOutcome = 'success'
-$ActionTestSrcSourceCodeOutcomeResult = $env:ActionTestSrcSourceCodeOutcome -eq $ActionTestSrcSourceCodeExpectedOutcome
-$ActionTestSrcSourceCodeExpectedConclusion = 'success'
-$ActionTestSrcSourceCodeConclusionResult = $env:ActionTestSrcSourceCodeConclusion -eq $ActionTestSrcSourceCodeExpectedConclusion
+$SourceCodeExpectedOutcome = 'success'
+$SourceCodeOutcomeResult = $env:SourceCodeOutcome -eq $SourceCodeExpectedOutcome
+$SourceCodeExpectedConclusion = 'success'
+$SourceCodeConclusionResult = $env:SourceCodeConclusion -eq $SourceCodeExpectedConclusion
 
-$ActionTestSrcCustomExpectedOutcome = 'success'
-$ActionTestSrcCustomOutcomeResult = $env:ActionTestSrcCustomOutcome -eq $ActionTestSrcCustomExpectedOutcome
-$ActionTestSrcCustomExpectedConclusion = 'success'
-$ActionTestSrcCustomConclusionResult = $env:ActionTestSrcCustomConclusion -eq $ActionTestSrcCustomExpectedConclusion
+$CustomExpectedOutcome = 'success'
+$CustomOutcomeResult = $env:CustomOutcome -eq $CustomExpectedOutcome
+$CustomExpectedConclusion = 'success'
+$CustomConclusionResult = $env:CustomConclusion -eq $CustomExpectedConclusion
 
-$ActionTestSrcWithManifestExpectedOutcome = 'failure'
-$ActionTestSrcWithManifestOutcomeResult = $env:ActionTestSrcWithManifestOutcome -eq $ActionTestSrcWithManifestExpectedOutcome
-$ActionTestSrcWithManifestExpectedConclusion = 'success'
-$ActionTestSrcWithManifestConclusionResult = $env:ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
+$WithManifestExpectedOutcome = 'failure'
+$WithManifestOutcomeResult = $env:WithManifestOutcome -eq $WithManifestExpectedOutcome
+$WithManifestExpectedConclusion = 'success'
+$WithManifestConclusionResult = $env:WithManifestConclusion -eq $WithManifestExpectedConclusion
 
-$ActionTestOutputsExpectedOutcome = 'success'
-$ActionTestOutputsOutcomeResult = $env:ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
-$ActionTestOutputsExpectedConclusion = 'success'
-$ActionTestOutputsConclusionResult = $env:ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
+$WithManifestDefaultExpectedOutcome = 'failure'
+$WithManifestDefaultOutcomeResult = $env:WithManifestDefaultOutcome -eq $WithManifestDefaultExpectedOutcome
+$WithManifestDefaultExpectedConclusion = 'success'
+$WithManifestDefaultConclusionResult = $env:WithManifestDefaultConclusion -eq $WithManifestDefaultExpectedConclusion
+
+$OutputsExpectedOutcome = 'success'
+$OutputsOutcomeResult = $env:OutputsOutcome -eq $OutputsExpectedOutcome
+$OutputsExpectedConclusion = 'success'
+$OutputsConclusionResult = $env:OutputsConclusion -eq $OutputsExpectedConclusion
 
 $jobs = @(
     [PSCustomObject]@{
         Name               = 'Action-Test - [Src-SourceCode]'
-        Outcome            = $env:ActionTestSrcSourceCodeOutcome
-        ExpectedOutcome    = $ActionTestSrcSourceCodeExpectedOutcome
-        PassedOutcome      = $ActionTestSrcSourceCodeOutcomeResult
-        Conclusion         = $env:ActionTestSrcSourceCodeConclusion
-        ExpectedConclusion = $ActionTestSrcSourceCodeExpectedConclusion
-        PassedConclusion   = $ActionTestSrcSourceCodeConclusionResult
+        Outcome            = $env:SourceCodeOutcome
+        ExpectedOutcome    = $SourceCodeExpectedOutcome
+        PassedOutcome      = $SourceCodeOutcomeResult
+        Conclusion         = $env:SourceCodeConclusion
+        ExpectedConclusion = $SourceCodeExpectedConclusion
+        PassedConclusion   = $SourceCodeConclusionResult
     },
     [PSCustomObject]@{
         Name               = 'Action-Test - [Src-Custom]'
-        Outcome            = $env:ActionTestSrcCustomOutcome
-        ExpectedOutcome    = $ActionTestSrcCustomExpectedOutcome
-        PassedOutcome      = $ActionTestSrcCustomOutcomeResult
-        Conclusion         = $env:ActionTestSrcCustomConclusion
-        ExpectedConclusion = $ActionTestSrcCustomExpectedConclusion
-        PassedConclusion   = $ActionTestSrcCustomConclusionResult
+        Outcome            = $env:CustomOutcome
+        ExpectedOutcome    = $CustomExpectedOutcome
+        PassedOutcome      = $CustomOutcomeResult
+        Conclusion         = $env:CustomConclusion
+        ExpectedConclusion = $CustomExpectedConclusion
+        PassedConclusion   = $CustomConclusionResult
     },
     [PSCustomObject]@{
         Name               = 'Action-Test - [Src-WithManifest]'
-        Outcome            = $env:ActionTestSrcWithManifestOutcome
-        ExpectedOutcome    = $ActionTestSrcWithManifestExpectedOutcome
-        PassedOutcome      = $ActionTestSrcWithManifestOutcomeResult
-        Conclusion         = $env:ActionTestSrcWithManifestConclusion
-        ExpectedConclusion = $ActionTestSrcWithManifestExpectedConclusion
-        PassedConclusion   = $ActionTestSrcWithManifestConclusionResult
+        Outcome            = $env:WithManifestOutcome
+        ExpectedOutcome    = $WithManifestExpectedOutcome
+        PassedOutcome      = $WithManifestOutcomeResult
+        Conclusion         = $env:WithManifestConclusion
+        ExpectedConclusion = $WithManifestExpectedConclusion
+        PassedConclusion   = $WithManifestConclusionResult
+    },
+    [PSCustomObject]@{
+        Name               = 'Action-Test - [Src-WithManifest-Default]'
+        Outcome            = $env:WithManifestDefaultOutcome
+        ExpectedOutcome    = $WithManifestDefaultExpectedOutcome
+        PassedOutcome      = $WithManifestDefaultOutcomeResult
+        Conclusion         = $env:WithManifestDefaultConclusion
+        ExpectedConclusion = $WithManifestDefaultExpectedConclusion
+        PassedConclusion   = $WithManifestDefaultConclusionResult
     },
     [PSCustomObject]@{
         Name               = 'Action-Test - [outputs]'
-        Outcome            = $env:ActionTestOutputsOutcome
-        ExpectedOutcome    = $ActionTestOutputsExpectedOutcome
-        PassedOutcome      = $ActionTestOutputsOutcomeResult
-        Conclusion         = $env:ActionTestOutputsConclusion
-        ExpectedConclusion = $ActionTestOutputsExpectedConclusion
-        PassedConclusion   = $ActionTestOutputsConclusionResult
+        Outcome            = $env:OutputsOutcome
+        ExpectedOutcome    = $OutputsExpectedOutcome
+        PassedOutcome      = $OutputsOutcomeResult
+        Conclusion         = $env:OutputsConclusion
+        ExpectedConclusion = $OutputsExpectedConclusion
+        PassedConclusion   = $OutputsConclusionResult
     }
 )
 
