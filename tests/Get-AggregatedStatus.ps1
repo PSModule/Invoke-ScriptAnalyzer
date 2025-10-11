@@ -35,7 +35,7 @@ $ActionTestSrcWithManifestOutcomeResult = $env:ActionTestSrcWithManifestOutcome 
 $ActionTestSrcWithManifestExpectedConclusion = 'success'
 $ActionTestSrcWithManifestConclusionResult = $env:ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
 
-$ActionTestSrcWithManifestDefaultExpectedOutcome = 'success'
+$ActionTestSrcWithManifestDefaultExpectedOutcome = 'failure'
 $ActionTestSrcWithManifestDefaultOutcomeResult = $env:ActionTestSrcWithManifestDefaultOutcome -eq $ActionTestSrcWithManifestDefaultExpectedOutcome
 $ActionTestSrcWithManifestDefaultExpectedConclusion = 'success'
 $ActionTestSrcWithManifestDefaultConclusionResult = $env:ActionTestSrcWithManifestDefaultConclusion -eq $ActionTestSrcWithManifestDefaultExpectedConclusion

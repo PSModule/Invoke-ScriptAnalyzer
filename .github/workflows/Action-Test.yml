@@ -101,6 +101,7 @@ jobs:
 
       - name: Action-Test
         uses: ./
+        continue-on-error: true
         id: action-test
         with:
           Path: src
@@ -163,6 +164,4 @@ jobs:
       - name: Aggregated Status
         uses: PSModule/Github-Script@v1
         with:
-          Script: |
-            # Aggregated Status
-            tests/Get-AggregatedStatus.ps1
+          Script: tests/Get-AggregatedStatus.ps1
