@@ -26,4 +26,5 @@ if ($null -eq $settingsFilePath) {
 
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
-Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
+# Output empty string instead of null to avoid GitHub Actions converting null to the string "null"
+Set-GitHubOutput -Name SettingsFilePath -Value ($null -eq $settingsFilePath ? '' : $settingsFilePath)
