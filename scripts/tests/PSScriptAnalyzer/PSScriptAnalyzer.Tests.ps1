@@ -104,7 +104,6 @@ Describe 'PSScriptAnalyzer' {
         $invokeParams = @{
             Path    = $Path
             Recurse = $true
-            Verbose = $true
         }
 
         if ($hasSettingsFile) {
@@ -112,7 +111,7 @@ Describe 'PSScriptAnalyzer' {
         }
 
         $logMessage = if ($hasSettingsFile) {
-            "Invoke-ScriptAnalyzer -Path [$relativePath] -Settings [$relativeSettingsFilePath]"
+            "Invoke-ScriptAnalyzer -Path [$relativePath] -Recurse -Settings [$relativeSettingsFilePath]"
         } else {
             "Invoke-ScriptAnalyzer -Path [$relativePath] -Recurse (using default settings)"
         }
