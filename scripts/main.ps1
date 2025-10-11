@@ -7,7 +7,8 @@ $codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
 $settingsFilePath = $null
 if (-not [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath)) {
     try {
-        $settingsFilePath = Resolve-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath -ErrorAction Stop | Select-Object -ExpandProperty Path
+        $settingsFilePath = Resolve-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath -ErrorAction Stop |
+            Select-Object -ExpandProperty Path
         Write-Information "Using settings file: $settingsFilePath"
     } catch {
         Write-Warning "Settings file not found at path: $($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath). Using default settings."
