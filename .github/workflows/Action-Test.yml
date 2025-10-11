@@ -89,6 +89,29 @@ jobs:
           Write-Host "Outcome: ${{ steps.action-test.outcome }}"
           Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
 
+  ActionTestSrcWithManifestDefault:
+    name: Action-Test - [Src-WithManifest-Default]
+    runs-on: ubuntu-latest
+    outputs:
+      Outcome: ${{ steps.action-test.outcome }}
+      Conclusion: ${{ steps.action-test.conclusion }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Action-Test
+        uses: ./
+        id: action-test
+        with:
+          Path: src
+          WorkingDirectory: tests/srcWithManifestTestRepo
+
+      - name: Status
+        shell: pwsh
+        run: |
+          Write-Host "Outcome: ${{ steps.action-test.outcome }}"
+          Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
+
   ActionTestOutputs:
     name: Action-Test - [outputs]
     runs-on: ubuntu-latest
@@ -118,6 +141,7 @@ jobs:
       - ActionTestSrcSourceCode
       - ActionTestSrcCustom
       - ActionTestSrcWithManifest
+      - ActionTestSrcWithManifestDefault
       - ActionTestOutputs
     if: always()
     runs-on: ubuntu-latest
@@ -128,6 +152,8 @@ jobs:
       ActionTestSrcCustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
       ActionTestSrcWithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
       ActionTestSrcWithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+      ActionTestSrcWithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
+      ActionTestSrcWithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
       ActionTestOutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
       ActionTestOutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:

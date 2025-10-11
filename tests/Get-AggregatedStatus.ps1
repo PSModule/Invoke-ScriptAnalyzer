@@ -35,6 +35,11 @@ $ActionTestSrcWithManifestOutcomeResult = $env:ActionTestSrcWithManifestOutcome 
 $ActionTestSrcWithManifestExpectedConclusion = 'success'
 $ActionTestSrcWithManifestConclusionResult = $env:ActionTestSrcWithManifestConclusion -eq $ActionTestSrcWithManifestExpectedConclusion
 
+$ActionTestSrcWithManifestDefaultExpectedOutcome = 'success'
+$ActionTestSrcWithManifestDefaultOutcomeResult = $env:ActionTestSrcWithManifestDefaultOutcome -eq $ActionTestSrcWithManifestDefaultExpectedOutcome
+$ActionTestSrcWithManifestDefaultExpectedConclusion = 'success'
+$ActionTestSrcWithManifestDefaultConclusionResult = $env:ActionTestSrcWithManifestDefaultConclusion -eq $ActionTestSrcWithManifestDefaultExpectedConclusion
+
 $ActionTestOutputsExpectedOutcome = 'success'
 $ActionTestOutputsOutcomeResult = $env:ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
 $ActionTestOutputsExpectedConclusion = 'success'
@@ -67,6 +72,15 @@ $jobs = @(
         Conclusion         = $env:ActionTestSrcWithManifestConclusion
         ExpectedConclusion = $ActionTestSrcWithManifestExpectedConclusion
         PassedConclusion   = $ActionTestSrcWithManifestConclusionResult
+    },
+    [PSCustomObject]@{
+        Name               = 'Action-Test - [Src-WithManifest-Default]'
+        Outcome            = $env:ActionTestSrcWithManifestDefaultOutcome
+        ExpectedOutcome    = $ActionTestSrcWithManifestDefaultExpectedOutcome
+        PassedOutcome      = $ActionTestSrcWithManifestDefaultOutcomeResult
+        Conclusion         = $env:ActionTestSrcWithManifestDefaultConclusion
+        ExpectedConclusion = $ActionTestSrcWithManifestDefaultExpectedConclusion
+        PassedConclusion   = $ActionTestSrcWithManifestDefaultConclusionResult
     },
     [PSCustomObject]@{
         Name               = 'Action-Test - [outputs]'
