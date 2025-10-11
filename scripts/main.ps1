@@ -12,6 +12,8 @@ if (-not [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Setti
     } catch {
         Write-Warning "Settings file not found at path: $($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath). Using default settings."
     }
+} else {
+    $settingsFilePath = ''
 }
 
 if ($null -eq $settingsFilePath) {
@@ -26,4 +28,4 @@ if ($null -eq $settingsFilePath) {
 
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
-Set-GitHubOutput -Name SettingsFilePath -Value ($null -eq $settingsFilePath ? '' : $settingsFilePath)
+Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
