@@ -16,7 +16,7 @@ if (-not [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Setti
     $settingsFilePath = ''
 }
 
-if ($null -eq $settingsFilePath) {
+if ([string]::IsNullOrEmpty($settingsFilePath)) {
     Write-Information 'No settings file specified or found. Using default PSScriptAnalyzer settings.'
 }
 
