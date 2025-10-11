@@ -32,7 +32,6 @@ jobs:
         id: action-test
         with:
           Path: src
-          Settings: SourceCode
           WorkingDirectory: tests/srcTestRepo
 
       - name: Status
@@ -56,7 +55,6 @@ jobs:
         id: action-test
         with:
           Path: src
-          Settings: Custom
           SettingsFilePath: tests/Custom.Settings.psd1
           WorkingDirectory: tests/srcTestRepo
 
@@ -82,7 +80,7 @@ jobs:
         id: action-test
         with:
           Path: src
-          Settings: SourceCode
+          SettingsFilePath: tests/SourceCode.Settings.psd1
           WorkingDirectory: tests/srcWithManifestTestRepo
 
       - name: Status
@@ -106,7 +104,6 @@ jobs:
         id: action-test
         with:
           Path: outputs/modules/PSModuleTest
-          Settings: Module
           WorkingDirectory: tests/outputTestRepo
 
       - name: Status

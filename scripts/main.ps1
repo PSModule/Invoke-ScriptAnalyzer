@@ -1,28 +1,18 @@
-﻿# If test type is module, the code we ought to test is in the path/name folder, otherwise it's in the path folder.
-$settings = $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Settings
+﻿# Resolve paths for testing
 $testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
 $path = [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path) ? '.' : $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path
 $codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
-$settingsFilePath = switch -Regex ($settings) {
-    'Module|SourceCode' {
-        "$testPath/$settings.Settings.psd1"
-    }
-    'Custom' {
-        Resolve-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath | Select-Object -ExpandProperty Path
-    }
-    default {
-        throw "Invalid test type: [$settings]"
-    }
-}
+$settingsFilePath = Resolve-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath | Select-Object -ExpandProperty Path
 
 [pscustomobject]@{
-    Settings         = $settings
     CodePath         = $codePath
     TestPath         = $testPath
     SettingsFilePath = $settingsFilePath
 } | Format-List | Out-String
 
-Set-GitHubOutput -Name Settings -Value $settings
+if (!(Test-Path -Path $settingsFilePath)) {
+    throw "Settings file not found at path: $settingsFilePath"
+}
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
 Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
