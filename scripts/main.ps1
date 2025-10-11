@@ -2,19 +2,18 @@
 $testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-Object -ExpandProperty Path
 $path = [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path) ? '.' : $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path
 $codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
-$settingsFilePath = Join-Path -Path $codePath -ChildPath $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
 
 [pscustomobject]@{
     CodePath         = $codePath
     TestPath         = $testPath
-    SettingsFilePath = $settingsFilePath
+    SettingsFilePath = $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
 } | Format-List | Out-String
 
-if (!(Test-Path -Path $settingsFilePath)) {
-    Write-Error "Settings file not found at path: $settingsFilePath"
+if (!(Test-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath)) {
+    Write-Error "Settings file not found at path: $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath"
     exit 1
 }
 
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
-Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
+Set-GitHubOutput -Name SettingsFilePath -Value $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
