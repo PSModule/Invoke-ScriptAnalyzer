@@ -3,6 +3,9 @@ $testPath = Resolve-Path -Path "$PSScriptRoot/tests/PSScriptAnalyzer" | Select-O
 $path = [string]::IsNullOrEmpty($env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path) ? '.' : $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Path
 $codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
 
+Write-Host "List files:"
+(Get-ChildItem -Path $pwd -Recurse).FullName | Sort-Object
+
 Write-Host "Looking for settings file under $($pwd.Path)"
 $tmpSettingsFilePath = Join-Path -Path $pwd.Path -ChildPath $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
 Write-Host "Checking: $tmpSettingsFilePath"
