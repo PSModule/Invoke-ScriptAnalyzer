@@ -6,8 +6,8 @@ $codePath = Resolve-Path -Path $path | Select-Object -ExpandProperty Path
 Write-Host "List files:"
 (Get-ChildItem -Path $pwd -Recurse -Force).FullName | Sort-Object
 
-Write-Host "Looking for settings file under $($pwd.Path)"
-$tmpSettingsFilePath = Join-Path -Path $pwd.Path -ChildPath $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
+Write-Host "Looking for settings file under $pwd"
+$tmpSettingsFilePath = Join-Path -Path $pwd -ChildPath $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_SettingsFilePath
 Write-Host "Checking: $tmpSettingsFilePath"
 $settingsFileExists = Test-Path -Path $tmpSettingsFilePath
 if ($settingsFileExists) {
