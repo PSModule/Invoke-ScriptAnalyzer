@@ -11,10 +11,8 @@ $settingsFilePath = Resolve-Path -Path $env:PSMODULE_INVOKE_SCRIPTANALYZER_INPUT
 } | Format-List | Out-String
 
 if (!(Test-Path -Path $settingsFilePath)) {
-    Write-Error "Settings file not found at path: $settingsFilePath"
-    exit 1
+    throw "Settings file not found at path: $settingsFilePath"
 }
-
 Set-GitHubOutput -Name CodePath -Value $codePath
 Set-GitHubOutput -Name TestPath -Value $testPath
 Set-GitHubOutput -Name SettingsFilePath -Value $settingsFilePath
