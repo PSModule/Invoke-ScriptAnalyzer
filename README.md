@@ -18,7 +18,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | Input                                | Description                                                                    | Required | Default                                                                     |
 |--------------------------------------|--------------------------------------------------------------------------------|----------|-----------------------------------------------------------------------------|
 | `Path`                               | The path to the code to test.                                                  | false    | `'.'`                                                                       |
-| `SettingsFilePath`                   | The path to the settings file.                                                 | false    | `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1` |
+| `SettingsFilePath`                   | The path to the settings file.                                                 | false    | `.github/linters/.powershell-psscriptanalyzer.psd1`                         |
 | `Debug`                              | Enable debug output.                                                           | false    | `'false'`                                                                   |
 | `Verbose`                            | Enable verbose output.                                                         | false    | `'false'`                                                                   |
 | `Version`                            | Specifies the exact version of the GitHub module to install.                   | false    |                                                                             |
