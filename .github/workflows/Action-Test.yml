@@ -157,16 +157,16 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     env:
-      ActionTestSrcSourceCodeOutcome: ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
-      ActionTestSrcSourceCodeConclusion: ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
-      ActionTestSrcCustomOutcome: ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
-      ActionTestSrcCustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
-      ActionTestSrcWithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
-      ActionTestSrcWithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
-      ActionTestSrcWithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
-      ActionTestSrcWithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
-      ActionTestOutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
-      ActionTestOutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
+      SourceCodeOutcome: ${{ needs.ActionTestSrcSourceCode.outputs.Outcome }}
+      SourceCodeConclusion: ${{ needs.ActionTestSrcSourceCode.outputs.Conclusion }}
+      CustomOutcome: ${{ needs.ActionTestSrcCustom.outputs.Outcome }}
+      CustomConclusion: ${{ needs.ActionTestSrcCustom.outputs.Conclusion }}
+      WithManifestOutcome: ${{ needs.ActionTestSrcWithManifest.outputs.Outcome }}
+      WithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
+      WithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
+      WithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
+      OutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
+      OutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5

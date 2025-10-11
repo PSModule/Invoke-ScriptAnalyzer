@@ -40,10 +40,10 @@ $WithManifestDefaultOutcomeResult = $env:WithManifestDefaultOutcome -eq $WithMan
 $WithManifestDefaultExpectedConclusion = 'success'
 $WithManifestDefaultConclusionResult = $env:WithManifestDefaultConclusion -eq $WithManifestDefaultExpectedConclusion
 
-$ActionTestOutputsExpectedOutcome = 'success'
-$ActionTestOutputsOutcomeResult = $env:ActionTestOutputsOutcome -eq $ActionTestOutputsExpectedOutcome
-$ActionTestOutputsExpectedConclusion = 'success'
-$ActionTestOutputsConclusionResult = $env:ActionTestOutputsConclusion -eq $ActionTestOutputsExpectedConclusion
+$OutputsExpectedOutcome = 'success'
+$OutputsOutcomeResult = $env:OutputsOutcome -eq $OutputsExpectedOutcome
+$OutputsExpectedConclusion = 'success'
+$OutputsConclusionResult = $env:OutputsConclusion -eq $OutputsExpectedConclusion
 
 $jobs = @(
     [PSCustomObject]@{
@@ -84,12 +84,12 @@ $jobs = @(
     },
     [PSCustomObject]@{
         Name               = 'Action-Test - [outputs]'
-        Outcome            = $env:ActionTestOutputsOutcome
-        ExpectedOutcome    = $ActionTestOutputsExpectedOutcome
-        PassedOutcome      = $ActionTestOutputsOutcomeResult
-        Conclusion         = $env:ActionTestOutputsConclusion
-        ExpectedConclusion = $ActionTestOutputsExpectedConclusion
-        PassedConclusion   = $ActionTestOutputsConclusionResult
+        Outcome            = $env:OutputsOutcome
+        ExpectedOutcome    = $OutputsExpectedOutcome
+        PassedOutcome      = $OutputsOutcomeResult
+        Conclusion         = $env:OutputsConclusion
+        ExpectedConclusion = $OutputsExpectedConclusion
+        PassedConclusion   = $OutputsConclusionResult
     }
 )
 
