@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Auto-Release
         uses: PSModule/Auto-Release@v1
