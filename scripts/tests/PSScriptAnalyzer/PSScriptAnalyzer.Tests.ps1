@@ -111,9 +111,9 @@ Describe 'PSScriptAnalyzer' {
         }
 
         $logMessage = if ($hasSettingsFile) {
-            "Invoke-ScriptAnalyzer -Path [$relativePath] -Recurse -Settings [$relativeSettingsFilePath]"
+            "Invoke-ScriptAnalyzer -Path '$relativePath' -Recurse -Settings '$relativeSettingsFilePath'"
         } else {
-            "Invoke-ScriptAnalyzer -Path [$relativePath] -Recurse (using default settings)"
+            "Invoke-ScriptAnalyzer -Path '$relativePath' -Recurse (using default settings)"
         }
 
         LogGroup $logMessage {
