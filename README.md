@@ -94,7 +94,7 @@ The action provides the following outputs:
    settings file is in the format of a `.psd1` file.
 
    By default, the action looks for a settings file at:
-   `${{ github.workspace }}/.github/linters/.powershell-psscriptanalyzer.psd1`
+   `.github/linters/.powershell-psscriptanalyzer.psd1`
 
    You can override this by setting the `SettingsFilePath` input to point to your
    custom settings file.
