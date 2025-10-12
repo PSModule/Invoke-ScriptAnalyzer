@@ -37,6 +37,11 @@ inputs:
       Output generated reports in JSON format in addition to the configured format through Pester.
     required: false
     default: 'true'
+  Notice_Mode:
+    description: |
+      Controls when to show notices for test completion. Allows "Full" (show on success and failure), "Failed" (show only on failure), or "None" (disable notices).
+    required: false
+    default: 'Failed'
   StepSummary_ShowTestOverview:
     description: |
       Controls whether to show the test overview table in the GitHub step summary.
@@ -271,6 +276,7 @@ runs:
         Path: ${{ github.action_path }}/scripts/tests/PSScriptAnalyzer
         Run_Path: ${{ fromJson(steps.paths.outputs.result).CodePath }}
         ReportAsJson: ${{ inputs.ReportAsJson }}
+        Notice_Mode: ${{ inputs.Notice_Mode }}
         StepSummary_ShowTestOverview: ${{ inputs.StepSummary_ShowTestOverview }}
         StepSummary_Mode: ${{ inputs.StepSummary_Mode }}
         StepSummary_ShowConfiguration: ${{ inputs.StepSummary_ShowConfiguration }}
