@@ -136,7 +136,7 @@ The action provides the following outputs:
    To be clear; the action follows the settings file to determine which rules to skip.
 
 4. **View the Results**
-    The action outputs the results of the tests to goth logs and step summary. If the tests pass, the actions `outcome` will be `success`.
+    The action outputs the results of the tests to both logs and step summary. If the tests pass, the actions `outcome` will be `success`.
     If the tests fail, the actions outcome will be `failure`. To make the workflow continue even if the tests fail, you can set the
     `continue-on-error` option to `true`. Use this built-in feature to stop the workflow from failing so that you can aggregate the status of tests
     across multiple jobs.
