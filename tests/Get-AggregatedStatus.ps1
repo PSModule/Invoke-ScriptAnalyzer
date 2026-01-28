@@ -1,4 +1,14 @@
-﻿'Markdown' | ForEach-Object {
+﻿<#
+    .DESCRIPTION
+    Aggregates and validates test results from all Action-Test workflow jobs.
+    Compares actual outcomes against expected values and generates a summary report.
+#>
+
+[CmdletBinding()]
+param()
+
+# Install and import the Markdown module for generating summary tables
+'Markdown' | ForEach-Object {
     $name = $_
     Write-Output "Installing module: $name"
     $retryCount = 5
@@ -19,102 +29,68 @@
     Import-Module -Name $name
 }
 
-# Build an array of objects for each job
-$SourceCodeExpectedOutcome = 'success'
-$SourceCodeOutcomeResult = $env:SourceCodeOutcome -eq $SourceCodeExpectedOutcome
-$SourceCodeExpectedConclusion = 'success'
-$SourceCodeConclusionResult = $env:SourceCodeConclusion -eq $SourceCodeExpectedConclusion
-
-$CustomExpectedOutcome = 'success'
-$CustomOutcomeResult = $env:CustomOutcome -eq $CustomExpectedOutcome
-$CustomExpectedConclusion = 'success'
-$CustomConclusionResult = $env:CustomConclusion -eq $CustomExpectedConclusion
-
-$WithManifestExpectedOutcome = 'failure'
-$WithManifestOutcomeResult = $env:WithManifestOutcome -eq $WithManifestExpectedOutcome
-$WithManifestExpectedConclusion = 'success'
-$WithManifestConclusionResult = $env:WithManifestConclusion -eq $WithManifestExpectedConclusion
-
-$WithManifestDefaultExpectedOutcome = 'failure'
-$WithManifestDefaultOutcomeResult = $env:WithManifestDefaultOutcome -eq $WithManifestDefaultExpectedOutcome
-$WithManifestDefaultExpectedConclusion = 'success'
-$WithManifestDefaultConclusionResult = $env:WithManifestDefaultConclusion -eq $WithManifestDefaultExpectedConclusion
-
-$OutputsExpectedOutcome = 'success'
-$OutputsOutcomeResult = $env:OutputsOutcome -eq $OutputsExpectedOutcome
-$OutputsExpectedConclusion = 'success'
-$OutputsConclusionResult = $env:OutputsConclusion -eq $OutputsExpectedConclusion
-
+# Build test job objects with expected vs actual values
 $jobs = @(
-    [PSCustomObject]@{
-        Name               = 'Action-Test - [Src-SourceCode]'
-        Outcome            = $env:SourceCodeOutcome
-        ExpectedOutcome    = $SourceCodeExpectedOutcome
-        PassedOutcome      = $SourceCodeOutcomeResult
-        Conclusion         = $env:SourceCodeConclusion
-        ExpectedConclusion = $SourceCodeExpectedConclusion
-        PassedConclusion   = $SourceCodeConclusionResult
-    },
-    [PSCustomObject]@{
-        Name               = 'Action-Test - [Src-Custom]'
-        Outcome            = $env:CustomOutcome
-        ExpectedOutcome    = $CustomExpectedOutcome
-        PassedOutcome      = $CustomOutcomeResult
-        Conclusion         = $env:CustomConclusion
-        ExpectedConclusion = $CustomExpectedConclusion
-        PassedConclusion   = $CustomConclusionResult
-    },
-    [PSCustomObject]@{
-        Name               = 'Action-Test - [Src-WithManifest]'
-        Outcome            = $env:WithManifestOutcome
-        ExpectedOutcome    = $WithManifestExpectedOutcome
-        PassedOutcome      = $WithManifestOutcomeResult
-        Conclusion         = $env:WithManifestConclusion
-        ExpectedConclusion = $WithManifestExpectedConclusion
-        PassedConclusion   = $WithManifestConclusionResult
-    },
-    [PSCustomObject]@{
-        Name               = 'Action-Test - [Src-WithManifest-Default]'
-        Outcome            = $env:WithManifestDefaultOutcome
-        ExpectedOutcome    = $WithManifestDefaultExpectedOutcome
-        PassedOutcome      = $WithManifestDefaultOutcomeResult
-        Conclusion         = $env:WithManifestDefaultConclusion
-        ExpectedConclusion = $WithManifestDefaultExpectedConclusion
-        PassedConclusion   = $WithManifestDefaultConclusionResult
-    },
-    [PSCustomObject]@{
-        Name               = 'Action-Test - [outputs]'
-        Outcome            = $env:OutputsOutcome
-        ExpectedOutcome    = $OutputsExpectedOutcome
-        PassedOutcome      = $OutputsOutcomeResult
-        Conclusion         = $env:OutputsConclusion
-        ExpectedConclusion = $OutputsExpectedConclusion
-        PassedConclusion   = $OutputsConclusionResult
+    @{
+        Name       = 'Action-Test - [Src-SourceCode]'
+        Outcome    = @{ Actual = $env:SourceCodeOutcome; Expected = 'success' }
+        Conclusion = @{ Actual = $env:SourceCodeConclusion; Expected = 'success' }
+    }
+    @{
+        Name       = 'Action-Test - [Src-Custom]'
+        Outcome    = @{ Actual = $env:CustomOutcome; Expected = 'success' }
+        Conclusion = @{ Actual = $env:CustomConclusion; Expected = 'success' }
+    }
+    @{
+        Name       = 'Action-Test - [Src-WithManifest]'
+        Outcome    = @{ Actual = $env:WithManifestOutcome; Expected = 'failure' }
+        Conclusion = @{ Actual = $env:WithManifestConclusion; Expected = 'success' }
+    }
+    @{
+        Name       = 'Action-Test - [Src-WithManifest-Default]'
+        Outcome    = @{ Actual = $env:WithManifestDefaultOutcome; Expected = 'failure' }
+        Conclusion = @{ Actual = $env:WithManifestDefaultConclusion; Expected = 'success' }
+    }
+    @{
+        Name       = 'Action-Test - [outputs]'
+        Outcome    = @{ Actual = $env:OutputsOutcome; Expected = 'success' }
+        Conclusion = @{ Actual = $env:OutputsConclusion; Expected = 'success' }
     }
 )
 
+# Add Pass property to each check and convert to PSCustomObject for table output
+$results = $jobs | ForEach-Object {
+    [PSCustomObject]@{
+        Name               = $_.Name
+        Outcome            = $_.Outcome.Actual
+        OutcomeExpected    = $_.Outcome.Expected
+        OutcomePass        = $_.Outcome.Actual -eq $_.Outcome.Expected
+        Conclusion         = $_.Conclusion.Actual
+        ConclusionExpected = $_.Conclusion.Expected
+        ConclusionPass     = $_.Conclusion.Actual -eq $_.Conclusion.Expected
+    }
+}
+
 # Display the table in the workflow logs
-$jobs | Format-List
+$results | Format-List | Out-String
 
 $passed = $true
-$jobs | ForEach-Object {
-    if (-not $_.PassedOutcome) {
-        Write-Warning "Job $($_.Name) failed with Outcome $($_.Outcome) and Expected Outcome $($_.ExpectedOutcome)"
+foreach ($job in $results) {
+    if (-not $job.OutcomePass) {
+        Write-Error "Job $($job.Name) failed with Outcome $($job.Outcome) and Expected Outcome $($job.OutcomeExpected)"
         $passed = $false
-        Write-Warning "Passed: $passed"
     }
 
-    if (-not $_.PassedConclusion) {
-        Write-Warning "Job $($_.Name) failed with Conclusion $($_.Conclusion) and Expected Conclusion $($_.ExpectedConclusion)"
+    if (-not $job.ConclusionPass) {
+        Write-Error "Job $($job.Name) failed with Conclusion $($job.Conclusion) and Expected Conclusion $($job.ConclusionExpected)"
         $passed = $false
-        Write-Warning "Passed: $passed"
     }
 }
 
 $icon = if ($passed) { '✅' } else { '❌' }
 $status = Heading 1 "$icon - GitHub Actions Status" {
     Table {
-        $jobs
+        $results
     }
 }
 
