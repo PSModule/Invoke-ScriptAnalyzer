@@ -262,15 +262,15 @@ runs:
         Script: ${{ github.action_path }}/src/main.ps1
 
     - name: Invoke-Pester
-      uses: PSModule/Invoke-Pester@abddf7bef0d0614d7ca322036af6a06ee0fb4d44 # v4.2.4
+      uses: PSModule/Invoke-Pester@4ff33199141fdf22568990b6107fe3148ae93a1c # v5.1.0
       id: test
       env:
         SettingsFilePath: ${{ fromJson(steps.paths.outputs.result).SettingsFilePath }}
       with:
         Debug: ${{ inputs.Debug }}
-        Prerelease: ${{ inputs.Prerelease }}
+        GitHubPrerelease: ${{ inputs.Prerelease }}
+        GitHubVersion: ${{ inputs.Version }}
         Verbose: ${{ inputs.Verbose }}
-        Version: ${{ inputs.Version }}
         WorkingDirectory: ${{ inputs.WorkingDirectory }}
         TestResult_TestSuiteName: ${{ inputs.TestResult_TestSuiteName }}
         Path: ${{ github.action_path }}/src/tests/PSScriptAnalyzer
