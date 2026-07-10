@@ -21,8 +21,10 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `SettingsFilePath`                   | The path to the settings file.                                                 | false    | `.github/linters/.powershell-psscriptanalyzer.psd1` |
 | `Debug`                              | Enable debug output.                                                           | false    | `'false'`                                           |
 | `Verbose`                            | Enable verbose output.                                                         | false    | `'false'`                                           |
-| `Version`                            | Specifies the exact version of the GitHub module to install.                   | false    |                                                     |
-| `Prerelease`                         | Allow prerelease versions if available.                                        | false    | `'false'`                                           |
+| `PesterVersion`                      | Specifies the version of the Pester module to install (NuGet range).           | false    |                                                     |
+| `PesterPrerelease`                   | Allow prerelease versions of the Pester module if available.                   | false    | `'false'`                                           |
+| `GitHubVersion`                      | Specifies the version of the GitHub module to install (NuGet range).           | false    |                                                     |
+| `GitHubPrerelease`                   | Allow prerelease versions of the GitHub module if available.                   | false    | `'false'`                                           |
 | `WorkingDirectory`                   | The working directory where the script runs.                                   | false    | `'.'`                                               |
 | `ReportAsJson`                       | Output generated reports in JSON format in addition to the configured format.  | false    | `'true'`                                            |
 | `Notice_Mode`                        | Controls when to show notices for test completion.                             | false    | `'Failed'`                                          |
