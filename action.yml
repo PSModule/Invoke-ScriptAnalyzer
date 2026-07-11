@@ -21,6 +21,15 @@ inputs:
     description: Enable verbose output.
     required: false
     default: 'false'
+  Version:
+    description: |
+      Specifies the version of the PSScriptAnalyzer module to install, using NuGet version-range syntax (for example '[1.0.0, 2.0.0)').
+      When empty, the latest available version is installed.
+    required: false
+  Prerelease:
+    description: Allow prerelease versions of the PSScriptAnalyzer module if available.
+    required: false
+    default: 'false'
   PesterVersion:
     description: |
       Specifies the version of the Pester module to install, using NuGet version-range syntax (for example '[6.0.0,7.0.0)').
@@ -277,6 +286,8 @@ runs:
       id: test
       env:
         SettingsFilePath: ${{ fromJson(steps.paths.outputs.result).SettingsFilePath }}
+        PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Version: ${{ inputs.Version }}
+        PSMODULE_INVOKE_SCRIPTANALYZER_INPUT_Prerelease: ${{ inputs.Prerelease }}
       with:
         Debug: ${{ inputs.Debug }}
         GitHubPrerelease: ${{ inputs.GitHubPrerelease }}
@@ -286,6 +297,7 @@ runs:
         Version: ${{ inputs.PesterVersion }}
         WorkingDirectory: ${{ inputs.WorkingDirectory }}
         TestResult_TestSuiteName: ${{ inputs.TestResult_TestSuiteName }}
+        Prescript: ${{ github.action_path }}/src/Install-PSScriptAnalyzer.ps1
         Path: ${{ github.action_path }}/src/tests/PSScriptAnalyzer
         Run_Path: ${{ fromJson(steps.paths.outputs.result).CodePath }}
         ReportAsJson: ${{ inputs.ReportAsJson }}

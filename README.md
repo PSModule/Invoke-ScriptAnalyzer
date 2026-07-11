@@ -21,6 +21,8 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `SettingsFilePath`                   | The path to the settings file.                                                 | false    | `.github/linters/.powershell-psscriptanalyzer.psd1` |
 | `Debug`                              | Enable debug output.                                                           | false    | `'false'`                                           |
 | `Verbose`                            | Enable verbose output.                                                         | false    | `'false'`                                           |
+| `Version`                            | Specifies the version of the PSScriptAnalyzer module to install (NuGet range). | false    |                                                     |
+| `Prerelease`                         | Allow prerelease versions of the PSScriptAnalyzer module if available.         | false    | `'false'`                                           |
 | `PesterVersion`                      | Specifies the version of the Pester module to install (NuGet range).           | false    |                                                     |
 | `PesterPrerelease`                   | Allow prerelease versions of the Pester module if available.                   | false    | `'false'`                                           |
 | `GitHubVersion`                      | Specifies the version of the GitHub module to install (NuGet range).           | false    |                                                     |
