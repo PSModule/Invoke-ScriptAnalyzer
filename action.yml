@@ -110,7 +110,7 @@ inputs:
     description: |
       Path relative to the current directory where code coverage report is saved.
     required: false
-    default: .PSModule/CodeCoverage/Coverage.xml
+    default: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
   CodeCoverage_OutputEncoding:
     description: |
       Encoding of the output file.
@@ -151,7 +151,7 @@ inputs:
     description: |
       Path relative to the current directory where test result report is saved.
     required: false
-    default: .PSModule/TestResult/Results.xml
+    default: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
   TestResult_OutputEncoding:
     description: |
       Encoding of the output file.

@@ -178,8 +178,8 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath .PSModule/TestResult/Results.xml `
-            -CodeCoveragePath .PSModule/CodeCoverage/Coverage.xml
+            -TestResultPath .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
+            -CodeCoveragePath .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
 
   ActionTestOutputs:
     name: Action-Test - [outputs]
