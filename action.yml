@@ -282,7 +282,7 @@ runs:
         Script: ${{ github.action_path }}/src/main.ps1
 
     - name: Invoke-Pester
-      uses: PSModule/Invoke-Pester@4ff33199141fdf22568990b6107fe3148ae93a1c # v5.1.0
+      uses: PSModule/Invoke-Pester@c5494aba3c07d7bfd81bdbbc9f301e8fa4a729fb # v5.1.1
       id: test
       env:
         SettingsFilePath: ${{ fromJson(steps.paths.outputs.result).SettingsFilePath }}
