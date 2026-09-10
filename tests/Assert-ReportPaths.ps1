@@ -7,7 +7,10 @@ param(
     [string] $TestResultPath,
 
     [Parameter(Mandatory)]
-    [string] $CodeCoveragePath
+    [string] $CodeCoveragePath,
+
+    [Parameter(Mandatory)]
+    [string] $ArtifactDirectory
 )
 
 function Assert-ReportPath {
@@ -51,7 +54,7 @@ function Assert-ReportPath {
 }
 
 $resolvedWorkingDirectory = [System.IO.Path]::GetFullPath($WorkingDirectory)
-$artifactDirectory = Join-Path -Path $resolvedWorkingDirectory -ChildPath '.PSModule'
+$artifactDirectory = Join-Path -Path $resolvedWorkingDirectory -ChildPath $ArtifactDirectory
 
 Assert-ReportPath -Path (Join-Path -Path $resolvedWorkingDirectory -ChildPath $TestResultPath) `
     -ReportName 'test result' `

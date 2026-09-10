@@ -69,11 +69,12 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `TestRegistry_Enabled`               | Enable TestRegistry.                                                           | false    |                                                     |
 
 The default report paths match the `Invoke-Pester` filename convention while
-using `.PSModule` to keep generated files out of the repository root:
+using generic `reports` directories to keep generated files out of the
+repository root:
 
 ```text
-TestResult_OutputPath: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
-CodeCoverage_OutputPath: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+TestResult_OutputPath: reports/TestResult/PSScriptAnalyzer-TestResult-Report.xml
+CodeCoverage_OutputPath: reports/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
 ```
 
 ## Outputs

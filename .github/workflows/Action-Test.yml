@@ -150,7 +150,8 @@ jobs:
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
             -TestResultPath .PSModule/Explicit/TestResult.xml `
-            -CodeCoveragePath .PSModule/Explicit/CodeCoverage.xml
+            -CodeCoveragePath .PSModule/Explicit/CodeCoverage.xml `
+            -ArtifactDirectory .PSModule
 
   ActionTestDefaultReportPaths:
     name: Action-Test - [Default Report Paths]
@@ -178,8 +179,9 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
-            -CodeCoveragePath .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+            -TestResultPath reports/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
+            -CodeCoveragePath reports/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml `
+            -ArtifactDirectory reports
 
   ActionTestOutputs:
     name: Action-Test - [outputs]
