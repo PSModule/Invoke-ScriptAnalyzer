@@ -138,10 +138,10 @@ jobs:
           WorkingDirectory: tests/srcTestRepo
           TestResult_Enabled: true
           TestResult_OutputFormat: NUnitXml
-          TestResult_OutputPath: .PSModule/Explicit/TestResult.xml
+          TestResult_OutputPath: artifacts/TestResult/results.xml
           CodeCoverage_Enabled: true
           CodeCoverage_OutputFormat: JaCoCo
-          CodeCoverage_OutputPath: .PSModule/Explicit/CodeCoverage.xml
+          CodeCoverage_OutputPath: artifacts/CodeCoverage/coverage.xml
           CodeCoverage_Path: ../../src/tests/PSScriptAnalyzer/PSScriptAnalyzer.Tests.ps1
 
       - name: Assert report paths
@@ -149,9 +149,9 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath .PSModule/Explicit/TestResult.xml `
-            -CodeCoveragePath .PSModule/Explicit/CodeCoverage.xml `
-            -ArtifactDirectory .PSModule `
+            -TestResultPath artifacts/TestResult/results.xml `
+            -CodeCoveragePath artifacts/CodeCoverage/coverage.xml `
+            -ArtifactDirectory artifacts `
             -UnexpectedDirectory TestResult,CodeCoverage,.temp
 
   ActionTestInvokePesterDefaultReportPaths:

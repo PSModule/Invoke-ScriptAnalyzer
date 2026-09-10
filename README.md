@@ -79,8 +79,8 @@ CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
 Set either input to override only that report's location:
 
 ```text
-TestResult_OutputPath: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
-CodeCoverage_OutputPath: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+TestResult_OutputPath: artifacts/TestResult/results.xml
+CodeCoverage_OutputPath: artifacts/CodeCoverage/coverage.xml
 ```
 
 ## Outputs
