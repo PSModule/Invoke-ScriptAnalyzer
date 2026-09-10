@@ -138,10 +138,10 @@ jobs:
           WorkingDirectory: tests/srcTestRepo
           TestResult_Enabled: true
           TestResult_OutputFormat: NUnitXml
-          TestResult_OutputPath: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
+          TestResult_OutputPath: .PSModule/Explicit/TestResult.xml
           CodeCoverage_Enabled: true
           CodeCoverage_OutputFormat: JaCoCo
-          CodeCoverage_OutputPath: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+          CodeCoverage_OutputPath: .PSModule/Explicit/CodeCoverage.xml
           CodeCoverage_Path: ../../src/tests/PSScriptAnalyzer/PSScriptAnalyzer.Tests.ps1
 
       - name: Assert report paths
@@ -149,8 +149,8 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
-            -CodeCoveragePath .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+            -TestResultPath .PSModule/Explicit/TestResult.xml `
+            -CodeCoveragePath .PSModule/Explicit/CodeCoverage.xml
 
   ActionTestDefaultReportPaths:
     name: Action-Test - [Default Report Paths]
@@ -178,8 +178,8 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
-            -CodeCoveragePath .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+            -TestResultPath .PSModule/TestResult/Results.xml `
+            -CodeCoveragePath .PSModule/CodeCoverage/Coverage.xml
 
   ActionTestOutputs:
     name: Action-Test - [outputs]
