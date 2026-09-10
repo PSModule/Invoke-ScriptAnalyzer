@@ -53,13 +53,13 @@ $jobs = @(
     }
     @{
         Name       = 'Action-Test - [Report Paths]'
-        Outcome    = @{ Actual = $env:ReportPathsOutcome; Expected = 'success' }
-        Conclusion = @{ Actual = $env:ReportPathsConclusion; Expected = 'success' }
+        Outcome    = @{ Actual = $env:ReportPathsResult; Expected = 'success' }
+        Conclusion = @{ Actual = $env:ReportPathsResult; Expected = 'success' }
     }
     @{
         Name       = 'Action-Test - [Invoke-Pester Default Report Paths]'
-        Outcome    = @{ Actual = $env:InvokePesterDefaultReportPathsOutcome; Expected = 'success' }
-        Conclusion = @{ Actual = $env:InvokePesterDefaultReportPathsConclusion; Expected = 'success' }
+        Outcome    = @{ Actual = $env:InvokePesterDefaultReportPathsResult; Expected = 'success' }
+        Conclusion = @{ Actual = $env:InvokePesterDefaultReportPathsResult; Expected = 'success' }
     }
     @{
         Name       = 'Action-Test - [outputs]'
