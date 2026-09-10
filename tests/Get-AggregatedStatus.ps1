@@ -52,6 +52,16 @@ $jobs = @(
         Conclusion = @{ Actual = $env:WithManifestDefaultConclusion; Expected = 'success' }
     }
     @{
+        Name       = 'Action-Test - [Report Paths]'
+        Outcome    = @{ Actual = $env:ReportPathsOutcome; Expected = 'success' }
+        Conclusion = @{ Actual = $env:ReportPathsConclusion; Expected = 'success' }
+    }
+    @{
+        Name       = 'Action-Test - [Invoke-Pester Default Report Paths]'
+        Outcome    = @{ Actual = $env:InvokePesterDefaultReportPathsOutcome; Expected = 'success' }
+        Conclusion = @{ Actual = $env:InvokePesterDefaultReportPathsConclusion; Expected = 'success' }
+    }
+    @{
         Name       = 'Action-Test - [outputs]'
         Outcome    = @{ Actual = $env:OutputsOutcome; Expected = 'success' }
         Conclusion = @{ Actual = $env:OutputsConclusion; Expected = 'success' }

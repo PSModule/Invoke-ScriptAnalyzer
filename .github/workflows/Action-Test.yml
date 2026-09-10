@@ -124,6 +124,9 @@ jobs:
   ActionTestReportPaths:
     name: Action-Test - [Report Paths]
     runs-on: ubuntu-latest
+    outputs:
+      Outcome: ${{ steps.action-test.outcome }}
+      Conclusion: ${{ steps.action-test.conclusion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -157,6 +160,9 @@ jobs:
   ActionTestInvokePesterDefaultReportPaths:
     name: Action-Test - [Invoke-Pester Default Report Paths]
     runs-on: ubuntu-latest
+    outputs:
+      Outcome: ${{ steps.action-test.outcome }}
+      Conclusion: ${{ steps.action-test.conclusion }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -231,6 +237,10 @@ jobs:
       WithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
       WithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
       WithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
+      ReportPathsOutcome: ${{ needs.ActionTestReportPaths.outputs.Outcome }}
+      ReportPathsConclusion: ${{ needs.ActionTestReportPaths.outputs.Conclusion }}
+      InvokePesterDefaultReportPathsOutcome: ${{ needs.ActionTestInvokePesterDefaultReportPaths.outputs.Outcome }}
+      InvokePesterDefaultReportPathsConclusion: ${{ needs.ActionTestInvokePesterDefaultReportPaths.outputs.Conclusion }}
       OutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
       OutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:
