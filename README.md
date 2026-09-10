@@ -68,6 +68,21 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `TestDrive_Enabled`                  | Enable TestDrive.                                                              | false    |                                                     |
 | `TestRegistry_Enabled`               | Enable TestRegistry.                                                           | false    |                                                     |
 
+When a report output path is empty, `Invoke-Pester` uses its default location
+relative to `WorkingDirectory`:
+
+```text
+TestResult/PSScriptAnalyzer-TestResult-Report.xml
+CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+```
+
+Set either input to override only that report's location:
+
+```text
+TestResult_OutputPath: artifacts/TestResult/results.xml
+CodeCoverage_OutputPath: artifacts/CodeCoverage/coverage.xml
+```
+
 ## Outputs
 
 The action provides the following outputs:
