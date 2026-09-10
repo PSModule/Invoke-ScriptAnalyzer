@@ -121,6 +121,70 @@ jobs:
           Write-Host "Outcome: ${{ steps.action-test.outcome }}"
           Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
 
+  ActionTestReportPaths:
+    name: Action-Test - [Report Paths]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Action-Test
+        uses: ./
+        id: action-test
+        with:
+          Path: src
+          WorkingDirectory: tests/srcTestRepo
+          TestResult_Enabled: true
+          TestResult_OutputFormat: NUnitXml
+          TestResult_OutputPath: artifacts/TestResult/results.xml
+          CodeCoverage_Enabled: true
+          CodeCoverage_OutputFormat: JaCoCo
+          CodeCoverage_OutputPath: artifacts/CodeCoverage/coverage.xml
+          CodeCoverage_Path: ../../src/tests/PSScriptAnalyzer/PSScriptAnalyzer.Tests.ps1
+
+      - name: Assert report paths
+        shell: pwsh
+        run: |
+          tests/Assert-ReportPaths.ps1 `
+            -WorkingDirectory tests/srcTestRepo `
+            -TestResultPath artifacts/TestResult/results.xml `
+            -CodeCoveragePath artifacts/CodeCoverage/coverage.xml `
+            -ArtifactDirectory artifacts `
+            -UnexpectedDirectory TestResult,CodeCoverage,.temp
+
+  ActionTestInvokePesterDefaultReportPaths:
+    name: Action-Test - [Invoke-Pester Default Report Paths]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Action-Test
+        uses: ./
+        id: action-test
+        with:
+          Path: src
+          WorkingDirectory: tests/srcTestRepo
+          TestResult_Enabled: true
+          TestResult_OutputFormat: NUnitXml
+          CodeCoverage_Enabled: true
+          CodeCoverage_OutputFormat: JaCoCo
+          CodeCoverage_Path: ../../src/tests/PSScriptAnalyzer/PSScriptAnalyzer.Tests.ps1
+
+      - name: Assert report paths
+        shell: pwsh
+        run: |
+          tests/Assert-ReportPaths.ps1 `
+            -WorkingDirectory tests/srcTestRepo `
+            -TestResultPath TestResult/PSScriptAnalyzer-TestResult-Report.xml `
+            -CodeCoveragePath CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml `
+            -ArtifactDirectory . `
+            -UnexpectedDirectory .temp
+
   ActionTestOutputs:
     name: Action-Test - [outputs]
     runs-on: ubuntu-latest
@@ -153,6 +217,8 @@ jobs:
       - ActionTestSrcCustom
       - ActionTestSrcWithManifest
       - ActionTestSrcWithManifestDefault
+      - ActionTestReportPaths
+      - ActionTestInvokePesterDefaultReportPaths
       - ActionTestOutputs
     if: always()
     runs-on: ubuntu-latest
@@ -165,6 +231,8 @@ jobs:
       WithManifestConclusion: ${{ needs.ActionTestSrcWithManifest.outputs.Conclusion }}
       WithManifestDefaultOutcome: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Outcome }}
       WithManifestDefaultConclusion: ${{ needs.ActionTestSrcWithManifestDefault.outputs.Conclusion }}
+      ReportPathsResult: ${{ needs.ActionTestReportPaths.result }}
+      InvokePesterDefaultReportPathsResult: ${{ needs.ActionTestInvokePesterDefaultReportPaths.result }}
       OutputsOutcome: ${{ needs.ActionTestOutputs.outputs.Outcome }}
       OutputsConclusion: ${{ needs.ActionTestOutputs.outputs.Conclusion }}
     steps:
