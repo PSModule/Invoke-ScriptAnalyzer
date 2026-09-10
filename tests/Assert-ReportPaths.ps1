@@ -10,7 +10,9 @@ param(
     [string] $CodeCoveragePath,
 
     [Parameter(Mandatory)]
-    [string] $ArtifactDirectory
+    [string] $ArtifactDirectory,
+
+    [string[]] $UnexpectedDirectory = @()
 )
 
 function Assert-ReportPath {
@@ -63,7 +65,7 @@ Assert-ReportPath -Path (Join-Path -Path $resolvedWorkingDirectory -ChildPath $C
     -ReportName 'code coverage' `
     -ArtifactDirectory $artifactDirectory
 
-foreach ($unexpectedDirectory in @('TestResult', 'CodeCoverage', '.temp')) {
+foreach ($unexpectedDirectory in $UnexpectedDirectory) {
     $unexpectedPath = Join-Path -Path $resolvedWorkingDirectory -ChildPath $unexpectedDirectory
     if (Test-Path -Path $unexpectedPath) {
         throw "Did not expect generated action state at [$unexpectedPath]."

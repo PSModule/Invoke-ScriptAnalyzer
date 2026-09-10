@@ -41,7 +41,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `Run_SkipRemainingOnFailure`         | Skips remaining tests after failure (None/Run/Container/Block).                | false    |                                                     |
 | `CodeCoverage_Enabled`               | Enable CodeCoverage.                                                           | false    |                                                     |
 | `CodeCoverage_OutputFormat`          | Format to use for code coverage report (JaCoCo/CoverageGutters/Cobertura).     | false    |                                                     |
-| `CodeCoverage_OutputPath`            | Path relative to the current directory where code coverage report is saved.    | false    | See below                                           |
+| `CodeCoverage_OutputPath`            | Path relative to the current directory where code coverage report is saved.    | false    |                                                     |
 | `CodeCoverage_OutputEncoding`        | Encoding of the output file.                                                   | false    |                                                     |
 | `CodeCoverage_Path`                  | Directories or files to be used for code coverage.                             | false    |                                                     |
 | `CodeCoverage_ExcludeTests`          | Exclude tests from code coverage.                                              | false    |                                                     |
@@ -51,7 +51,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `CodeCoverage_SingleHitBreakpoints`  | Remove breakpoint when it is hit.                                              | false    |                                                     |
 | `TestResult_Enabled`                 | Enable TestResult.                                                             | false    |                                                     |
 | `TestResult_OutputFormat`            | Format to use for test result report (NUnitXml/NUnit2.5/NUnit3/JUnitXml).      | false    |                                                     |
-| `TestResult_OutputPath`              | Path relative to the current directory where test result report is saved.      | false    | See below                                           |
+| `TestResult_OutputPath`              | Path relative to the current directory where test result report is saved.      | false    |                                                     |
 | `TestResult_OutputEncoding`          | Encoding of the output file.                                                   | false    |                                                     |
 | `TestResult_TestSuiteName`           | Set the name assigned to the root 'test-suite' element.                        | false    | `PSScriptAnalyzer`                                  |
 | `Should_ErrorAction`                 | Controls if Should throws on error. Use 'Stop' or 'Continue'.                  | false    |                                                     |
@@ -68,13 +68,19 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `TestDrive_Enabled`                  | Enable TestDrive.                                                              | false    |                                                     |
 | `TestRegistry_Enabled`               | Enable TestRegistry.                                                           | false    |                                                     |
 
-The default report paths match the `Invoke-Pester` filename convention while
-using generic `reports` directories to keep generated files out of the
-repository root:
+When a report output path is empty, `Invoke-Pester` uses its default location
+relative to `WorkingDirectory`:
 
 ```text
-TestResult_OutputPath: reports/TestResult/PSScriptAnalyzer-TestResult-Report.xml
-CodeCoverage_OutputPath: reports/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+TestResult/PSScriptAnalyzer-TestResult-Report.xml
+CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+```
+
+Set either input to override only that report's location:
+
+```text
+TestResult_OutputPath: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
+CodeCoverage_OutputPath: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
 ```
 
 ## Outputs

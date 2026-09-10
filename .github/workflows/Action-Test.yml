@@ -151,10 +151,11 @@ jobs:
             -WorkingDirectory tests/srcTestRepo `
             -TestResultPath .PSModule/Explicit/TestResult.xml `
             -CodeCoveragePath .PSModule/Explicit/CodeCoverage.xml `
-            -ArtifactDirectory .PSModule
+            -ArtifactDirectory .PSModule `
+            -UnexpectedDirectory TestResult,CodeCoverage,.temp
 
-  ActionTestDefaultReportPaths:
-    name: Action-Test - [Default Report Paths]
+  ActionTestInvokePesterDefaultReportPaths:
+    name: Action-Test - [Invoke-Pester Default Report Paths]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -179,9 +180,10 @@ jobs:
         run: |
           tests/Assert-ReportPaths.ps1 `
             -WorkingDirectory tests/srcTestRepo `
-            -TestResultPath reports/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
-            -CodeCoveragePath reports/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml `
-            -ArtifactDirectory reports
+            -TestResultPath TestResult/PSScriptAnalyzer-TestResult-Report.xml `
+            -CodeCoveragePath CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml `
+            -ArtifactDirectory . `
+            -UnexpectedDirectory .temp
 
   ActionTestOutputs:
     name: Action-Test - [outputs]
@@ -216,7 +218,7 @@ jobs:
       - ActionTestSrcWithManifest
       - ActionTestSrcWithManifestDefault
       - ActionTestReportPaths
-      - ActionTestDefaultReportPaths
+      - ActionTestInvokePesterDefaultReportPaths
       - ActionTestOutputs
     if: always()
     runs-on: ubuntu-latest
