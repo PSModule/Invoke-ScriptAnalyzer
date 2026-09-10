@@ -41,7 +41,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `Run_SkipRemainingOnFailure`         | Skips remaining tests after failure (None/Run/Container/Block).                | false    |                                                     |
 | `CodeCoverage_Enabled`               | Enable CodeCoverage.                                                           | false    |                                                     |
 | `CodeCoverage_OutputFormat`          | Format to use for code coverage report (JaCoCo/CoverageGutters/Cobertura).     | false    |                                                     |
-| `CodeCoverage_OutputPath`            | Path relative to the current directory where code coverage report is saved.    | false    |                                                     |
+| `CodeCoverage_OutputPath`            | Path relative to the current directory where code coverage report is saved.    | false    | `.PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml` |
 | `CodeCoverage_OutputEncoding`        | Encoding of the output file.                                                   | false    |                                                     |
 | `CodeCoverage_Path`                  | Directories or files to be used for code coverage.                             | false    |                                                     |
 | `CodeCoverage_ExcludeTests`          | Exclude tests from code coverage.                                              | false    |                                                     |
@@ -51,7 +51,7 @@ customize rule selection, severity filtering, and custom rule inclusion.
 | `CodeCoverage_SingleHitBreakpoints`  | Remove breakpoint when it is hit.                                              | false    |                                                     |
 | `TestResult_Enabled`                 | Enable TestResult.                                                             | false    |                                                     |
 | `TestResult_OutputFormat`            | Format to use for test result report (NUnitXml/NUnit2.5/NUnit3/JUnitXml).      | false    |                                                     |
-| `TestResult_OutputPath`              | Path relative to the current directory where test result report is saved.      | false    |                                                     |
+| `TestResult_OutputPath`              | Path relative to the current directory where test result report is saved.      | false    | `.PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml` |
 | `TestResult_OutputEncoding`          | Encoding of the output file.                                                   | false    |                                                     |
 | `TestResult_TestSuiteName`           | Set the name assigned to the root 'test-suite' element.                        | false    | `PSScriptAnalyzer`                                  |
 | `Should_ErrorAction`                 | Controls if Should throws on error. Use 'Stop' or 'Continue'.                  | false    |                                                     |

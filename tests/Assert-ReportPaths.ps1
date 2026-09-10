@@ -11,6 +11,10 @@ param(
 )
 
 function Assert-ReportPath {
+    <#
+        .SYNOPSIS
+        Confirms that an action report is generated in the fixture artifact directory.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
