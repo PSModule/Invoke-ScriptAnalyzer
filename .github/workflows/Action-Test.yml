@@ -121,6 +121,37 @@ jobs:
           Write-Host "Outcome: ${{ steps.action-test.outcome }}"
           Write-Host "Conclusion: ${{ steps.action-test.conclusion }}"
 
+  ActionTestReportPaths:
+    name: Action-Test - [Report Paths]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Action-Test
+        uses: ./
+        id: action-test
+        with:
+          Path: src
+          WorkingDirectory: tests/srcTestRepo
+          TestResult_Enabled: true
+          TestResult_OutputFormat: NUnitXml
+          TestResult_OutputPath: .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml
+          CodeCoverage_Enabled: true
+          CodeCoverage_OutputFormat: JaCoCo
+          CodeCoverage_OutputPath: .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+          CodeCoverage_Path: ../../src/tests/PSScriptAnalyzer/PSScriptAnalyzer.Tests.ps1
+
+      - name: Assert report paths
+        shell: pwsh
+        run: |
+          tests/Assert-ReportPaths.ps1 `
+            -WorkingDirectory tests/srcTestRepo `
+            -TestResultPath .PSModule/TestResult/PSScriptAnalyzer-TestResult-Report.xml `
+            -CodeCoveragePath .PSModule/CodeCoverage/PSScriptAnalyzer-CodeCoverage-Report.xml
+
   ActionTestOutputs:
     name: Action-Test - [outputs]
     runs-on: ubuntu-latest
@@ -153,6 +184,7 @@ jobs:
       - ActionTestSrcCustom
       - ActionTestSrcWithManifest
       - ActionTestSrcWithManifestDefault
+      - ActionTestReportPaths
       - ActionTestOutputs
     if: always()
     runs-on: ubuntu-latest
